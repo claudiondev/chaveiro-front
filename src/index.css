@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  background: #0B1A2E;
+  font-family: 'DM Sans', sans-serif;
+  color: #fff;
+  min-height: 100vh;
+}
+
+/* Esconder scrollbar mas permitir scroll */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+}
+
+/* Transições suaves globais */
+button, a, input {
+  transition: all 150ms ease;
+}
+
+/* Utilitários personalizados */
+@layer utilities {
+  .text-shadow-gold {
+    text-shadow: 0 0 20px rgba(245, 183, 49, 0.15);
+  }
+}
