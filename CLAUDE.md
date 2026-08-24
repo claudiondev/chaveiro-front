@@ -42,6 +42,7 @@ src/
 │   ├── Card.jsx               # Card reutilizável
 │   ├── Chip.jsx               # Filtro/seleção
 │   ├── GoldButton.jsx         # CTA primário
+│   ├── InstallPrompt.jsx      # Banner PWA "Instalar app"
 │   ├── KeyCounter.jsx         # Contador de chaves (central)
 │   ├── ProtectedRoute.jsx     # Guard com role (apenaDono)
 │   └── TeethLine.jsx          # Divisor SVG decorativo
@@ -75,18 +76,37 @@ src/
 | /relatorios | Relatórios | DONO |
 | /menu | Menu | Autenticado |
 
-## Commits — 13/08/2026
+## Commits
 
 | Commit | Mensagem |
 |---|---|
-| `e779703` | feat: frontend MVP completo |
 | `610f052` | Initial commit |
+| `e779703` | feat: frontend MVP completo |
+| `5492128` | feat: logo atualizada nas telas |
+| `3f377c2` | feat: PWA instalavel no celular |
+
+## PWA — 24/08/2026
+
+- `public/manifest.json` — nome, cores, ícones, display standalone
+- `public/sw.js` — service worker com cache (assets estáticos + API com NetworkFirst)
+- Ícones: pwa-64x64, pwa-192x192, pwa-512x512, pwa-maskable-512x512, apple-touch-icon, favicon-32x32
+- `src/components/InstallPrompt.jsx` — banner de instalação (captura `beforeinstallprompt`)
+- `scripts/generate-icons.mjs` — gera ícones a partir do logo.png via sharp
+
+## Deploy
+
+- **Vercel**: conecta no GitHub, detecta Vite automaticamente
+- Build: `npm run build` → output: `dist`
+- Variável: `VITE_API_URL` = URL do backend no Render (ex: `https://chaveiro-back.onrender.com`)
+- O `api.js` usa `VITE_API_URL` quando disponível, senão faz proxy local (`/api`)
 
 ## Status
 
-MVP funcional completo. Testado end-to-end com backend + PostgreSQL.
+MVP funcional completo + PWA. Testado end-to-end com backend + PostgreSQL.
 Todas as 7 telas funcionando com dados reais da API.
+Pronto para deploy (Vercel).
 
 ### Próxima fase
 
 Redesign da identidade visual (planejado pelo Claudio).
+Dashboard com gráficos, exportação PDF, relatórios avançados.
