@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from './contexts/AuthContext'
 import BottomNav from './components/BottomNav'
+import InstallPrompt from './components/InstallPrompt'
 import ProtectedRoute from './components/ProtectedRoute'
 
 // Pages
@@ -18,6 +19,7 @@ function AppLayout({ children }) {
     <div className="min-h-screen bg-marinho max-w-md mx-auto relative">
       {children}
       <BottomNav />
+      <InstallPrompt />
     </div>
   )
 }
