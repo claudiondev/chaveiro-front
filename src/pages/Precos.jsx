@@ -57,7 +57,10 @@ export default function Precos() {
     <div className="min-h-screen bg-marinho pb-24">
       {/* Header */}
       <div className="px-5 pt-6 flex justify-between items-center">
-        <h1 className="font-display font-bold text-xl text-texto">TABELA DE PREÇOS</h1>
+        <div className="flex items-center gap-2.5">
+          <img src="/logo.png" alt="Logo" className="w-9 h-9 object-contain" />
+          <h1 className="font-display font-bold text-xl text-texto">TABELA DE PREÇOS</h1>
+        </div>
         <button
           onClick={() => navigate('/servicos/registrar')}
           className="bg-ouro-fosco border border-ouro rounded-xl px-3.5 py-2 text-ouro text-sm font-display font-semibold"

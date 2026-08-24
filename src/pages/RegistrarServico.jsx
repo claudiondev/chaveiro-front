@@ -92,6 +92,7 @@ export default function RegistrarServico() {
         >
           <ChevronLeft size={18} />
         </button>
+        <img src="/logo.png" alt="Logo" className="w-9 h-9 object-contain" />
         <h1 className="font-display font-bold text-xl text-texto">REGISTRAR SERVIÇO</h1>
       </div>
 
