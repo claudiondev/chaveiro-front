@@ -44,7 +44,7 @@ export default function InstallPrompt() {
   if (!mostrar) return null
 
   return (
-    <div className="fixed bottom-20 left-4 right-4 z-50 max-w-md mx-auto">
+    <div className="fixed bottom-28 left-4 right-4 z-50 max-w-md mx-auto">
       <div className="bg-marinho-claro border border-ouro rounded-xl p-4 flex items-center gap-3 shadow-lg shadow-black/30">
         <div className="w-10 h-10 rounded-lg bg-ouro-fosco border border-ouro flex items-center justify-center flex-shrink-0">
           <Download size={18} className="text-ouro" />

@@ -99,7 +99,7 @@ export default function Caixa() {
   // Caixa não aberto
   if (semCaixa) {
     return (
-      <div className="min-h-screen bg-marinho pb-24">
+      <div className="min-h-screen bg-marinho pb-32">
         <div className="px-5 pt-6">
           <h1 className="font-display font-bold text-xl text-texto">CAIXA DO DIA</h1>
         </div>
@@ -136,7 +136,7 @@ export default function Caixa() {
   }
 
   return (
-    <div className="min-h-screen bg-marinho pb-24">
+    <div className="min-h-screen bg-marinho pb-32">
       {/* Header */}
       <div className="px-5 pt-6 flex justify-between items-center">
         <h1 className="font-display font-bold text-xl text-texto">CAIXA DO DIA</h1>

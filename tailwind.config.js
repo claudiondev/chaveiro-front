@@ -27,10 +27,23 @@ export default {
       fontFamily: {
         display: ['"Barlow Condensed"', 'sans-serif'],
         body: ['"DM Sans"', 'sans-serif'],
-        numero: ['"Space Grotesk"', 'sans-serif'],
+        numero: ['"IBM Plex Mono"', 'ui-monospace', 'monospace'],
       },
       borderRadius: {
         card: '14px',
+      },
+      boxShadow: {
+        flutuante: '0 10px 34px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.35)',
+        ouro: '0 8px 24px rgba(245, 183, 49, 0.28)',
+      },
+      keyframes: {
+        cortar: {
+          '0%': { transform: 'scaleY(0)', opacity: '0' },
+          '100%': { transform: 'scaleY(1)', opacity: '1' },
+        },
+      },
+      animation: {
+        cortar: 'cortar 320ms cubic-bezier(0.2, 0.9, 0.3, 1) both',
       },
     },
   },

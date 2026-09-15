@@ -82,7 +82,7 @@ export default function RegistrarServico() {
   }
 
   return (
-    <div className="min-h-screen bg-marinho pb-24">
+    <div className="min-h-screen bg-marinho pb-32">
       {/* Header */}
       <div className="px-5 pt-6 flex items-center gap-3">
         <button
