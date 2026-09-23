@@ -20,21 +20,21 @@
 
 O **Chaveiro Abençoado** é o frontend de um sistema de gestão pensado para o dia a dia real de um chaveiro: cada toque na tela precisa registrar algo útil. O funcionário não quer preencher formulário — quer bater o olho no preço, registrar o serviço e seguir pro próximo cliente.
 
-Layout POS (ponto de venda) mobile-first, com dois perfis de acesso: **DONO** (acesso total, incluindo relatórios) e **FUNCIONÁRIO** (operação do dia a dia). Consome a API REST do backend Spring Boot (`chaveiro-back`) via Axios com autenticação JWT.
+Layout responsivo para celular e computador, com dois perfis de acesso: **DONO** (acesso total, incluindo relatórios) e **FUNCIONÁRIO** (operação do dia a dia). Consome a API REST do backend Spring Boot (`chaveiro-back`) via Axios com autenticação JWT.
 
-> **Fase Atual:** MVP funcional completo, com as 7 telas integradas a dados reais da API e instalável como PWA no celular. Próxima etapa: redesign da identidade visual e deploy em produção.
+> **Fase Atual:** MVP funcional completo com identidade de balcão, telas responsivas, dados reais da API e instalação como PWA.
 
 ---
 
 ## ✨ Funcionalidades
 
 - 🔐 **Login com JWT** — sessão persistida em `localStorage`, logout automático em token expirado/inválido (401)
-- 🏠 **Home (POS)** — saudação por horário, contador de chaves cortadas no dia, atalhos rápidos (novo serviço, caixa, preços, relatórios) e feed de atividade recente
-- 💵 **Tabela de preços** — grid de tipos de serviço filtrável por categoria (Chave, Fechadura, Controle, Carimbo), com preço padrão e preço para atendimento externo
+- 🏠 **Home (POS)** — movimento do dia, chave visual dos últimos serviços, contador de chaves cortadas, situação do caixa e atendimentos recentes
+- 💵 **Tabela de preços** — catálogo pesquisável e filtrável, com preço de balcão e atendimento externo
 - ➕ **Registrar serviço** — busca do tipo, quantidade, forma de pagamento (Dinheiro/PIX/Débito/Crédito), toggle de atendimento a domicílio com endereço e cálculo automático do total
 - 💰 **Caixa do dia** — abertura de caixa com valor inicial, registro de movimentações (entrada/saída) por categoria, saldo em tempo real
 - 📊 **Fechamento diário** — resumo de abertura, entradas, saídas, saldo final e total de chaves cortadas no dia
-- 📈 **Relatórios (DONO)** — gráficos por período (diário/semanal/mensal): entradas por forma de pagamento (área) e saídas por categoria (pizza), via Recharts
+- 📈 **Relatórios (DONO)** — comparações por barras de entradas por pagamento e saídas por categoria nos períodos diário, semanal e mensal
 - ⚙️ **Menu** — dados do perfil logado, cadastro de novos funcionários (restrito a DONO) e logout
 - 🛡️ **Rotas protegidas** — `ProtectedRoute` bloqueia telas restritas (Relatórios) para quem não é DONO
 - 📱 **PWA instalável** — manifest, service worker (cache de assets + estratégia NetworkFirst na API) e banner de instalação no celular
@@ -47,14 +47,15 @@ Layout POS (ponto de venda) mobile-first, com dois perfis de acesso: **DONO** (a
 chaveiro-front/
 ├── src/
 │   ├── components/
-│   │   ├── BottomNav.jsx       🧭 Navegação inferior (4 abas)
+│   │   ├── BottomNav.jsx       🧭 Navegação inferior e lateral
 │   │   ├── Card.jsx            🃏 Card reutilizável
 │   │   ├── Chip.jsx            🔘 Filtro/seleção
 │   │   ├── GoldButton.jsx      🟡 CTA primário
 │   │   ├── InstallPrompt.jsx   📲 Banner de instalação PWA
-│   │   ├── KeyCounter.jsx      🔑 Contador de chaves (Home)
+│   │   ├── ChaveDoDia.jsx      🔑 Perfil visual dos serviços do dia
+│   │   ├── InterfaceState.jsx  ⏳ Estados de carregamento e erro
+│   │   ├── PageHeader.jsx      📐 Cabeçalho compartilhado
 │   │   ├── ProtectedRoute.jsx  🛡️ Guard de rota por role
-│   │   └── TeethLine.jsx       〰️ Divisor decorativo (dentes de chave)
 │   ├── contexts/
 │   │   └── AuthContext.jsx     🔐 Login, logout, isDono, sessão
 │   ├── pages/
@@ -64,10 +65,12 @@ chaveiro-front/
 │   │   ├── RegistrarServico.jsx Registro rápido de serviço
 │   │   ├── Caixa.jsx           Abertura e movimentações do caixa
 │   │   ├── Fechamento.jsx      Resumo do fechamento diário
-│   │   ├── Relatorios.jsx      Gráficos (acesso DONO)
+│   │   ├── Relatorios.jsx      Comparativos (acesso DONO)
 │   │   └── Menu.jsx            Perfil, cadastro de funcionário, logout
 │   ├── services/
 │   │   └── api.js              Instância Axios + interceptors JWT
+│   ├── utils/
+│   │   └── formatters.js       Moeda e datas em pt-BR
 │   ├── App.jsx                 Rotas + AppLayout
 │   ├── main.jsx                Entry point (BrowserRouter + AuthProvider)
 │   └── index.css                Tailwind + globals
@@ -192,13 +195,15 @@ O app pode ser instalado como aplicativo no Android/iOS direto pelo navegador:
 - ✅ Registro de serviço (quantidade, pagamento, domicílio)
 - ✅ Caixa do dia (abertura + movimentações)
 - ✅ Fechamento diário
-- ✅ Relatórios com gráficos (DONO)
+- ✅ Relatórios comparativos (DONO)
 - ✅ Menu (perfil, cadastro de funcionário, logout)
 - ✅ PWA instalável (manifest, service worker, ícones)
 - ✅ Configuração de produção (`VITE_API_URL` dinâmica)
 
-### ⏳ Fase 2 — Próximos passos
-- ⏳ Redesign completo da identidade visual
+### ✅ Fase 2 — Identidade de balcão
+- ✅ Redesign completo e responsivo
+
+### ⏳ Próximos passos
 - ⏳ Dashboard com gráficos avançados
 - ⏳ Exportação de relatórios em PDF
 - ⏳ Deploy em produção (Vercel + Render)

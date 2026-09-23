@@ -101,6 +101,13 @@ src/
 - Login usa “Acesso da equipe”, identidade direta da loja e composição própria para desktop.
 - O bundle principal caiu de aproximadamente 645 kB para 271 kB após remover a biblioteca de gráficos.
 
+### Validação do redesign
+
+- `npm run build` aprovado após cada etapa; bundle final sem aviso de chunk acima de 500 kB.
+- Login inspecionado em 360, 390, 768 e desktop sem rolagem horizontal.
+- Zoom do navegador voltou a ser permitido no celular, removendo `user-scalable=no`.
+- Telas autenticadas dependem de backend e sessão válidos para inspeção visual com dados reais.
+
 ## Configuração
 
 - `vite.config.js`: proxy /api → localhost:8080
