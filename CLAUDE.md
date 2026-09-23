@@ -4,7 +4,7 @@
 
 ## Visão geral
 
-Frontend mobile-first do Sistema Chaveiro Abençoado. Conecta ao backend Spring Boot via API REST + JWT.
+Frontend responsivo do Sistema Chaveiro Abençoado, pensado para celular e balcão no computador. Conecta ao backend Spring Boot via API REST + JWT.
 
 ## Stack
 
@@ -18,13 +18,11 @@ Frontend mobile-first do Sistema Chaveiro Abençoado. Conecta ao backend Spring 
 ## Identidade visual atual
 
 - Paleta: marinho (#0B1A2E) + ouro (#F5B731)
-- Fontes: Barlow Condensed (display), DM Sans (body), Space Grotesk (números)
-- Layout POS mobile-first, max-w-md centralizado
-- Elemento central: contador de chaves cortadas
-- Divisor decorativo: teeth-line (dentes de chave)
+- Fontes: Barlow Condensed (display), DM Sans (body), IBM Plex Mono (números)
+- Conceito: balcão de trabalho, com catálogo, ficha de atendimento e conferência do caixa
+- Layout mobile com navegação inferior e desktop com navegação lateral a partir de 1024 px
+- Elemento de assinatura: chave do dia, formada pelos serviços registrados
 - Logo: public/logo.png (mascote chaveiro + nome)
-
-**Obs**: identidade visual será redesenhada. O código atual serve como base funcional.
 
 ## Estrutura
 
@@ -39,6 +37,8 @@ src/
 │   └── AuthContext.jsx        # Login, logout, isDono, localStorage
 ├── components/
 │   ├── BottomNav.jsx          # Nav inferior 4 abas
+│   ├── PageHeader.jsx         # Cabeçalho responsivo compartilhado
+│   ├── InterfaceState.jsx     # Estados de carregamento e erro
 │   ├── Card.jsx               # Card reutilizável
 │   ├── Chip.jsx               # Filtro/seleção
 │   ├── GoldButton.jsx         # CTA primário
@@ -56,6 +56,17 @@ src/
     ├── Relatorios.jsx         # Gráficos (DONO only)
     └── Menu.jsx               # Perfil, cadastro, config
 ```
+
+## Redesign — 23/09/2026
+
+### Etapa 1 — base responsiva
+
+- Removido o limite global `max-w-md`; páginas usam `page-shell` e conteúdo de até 1200 px.
+- Navegação inferior mantém os quatro rótulos visíveis no celular.
+- Navegação lateral com marca e ação “Registrar serviço” no desktop.
+- Foco de teclado padronizado e respeitado em botões, links e campos.
+- Criados formatadores compartilhados de moeda/data e estados reutilizáveis de carregamento/erro.
+- Decisão: manter a paleta marinho + ouro e reduzir caixas decorativas, usando hierarquia, listas e divisores.
 
 ## Configuração
 

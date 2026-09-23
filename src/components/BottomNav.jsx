@@ -22,12 +22,43 @@ export default function BottomNav() {
   const mostrarAcao = location.pathname !== ROTA_REGISTRAR
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none">
+    <>
+    <aside className="fixed inset-y-0 left-0 z-50 hidden w-64 border-r border-marinho-borda bg-marinho/95 px-5 py-7 lg:flex lg:flex-col">
+      <button onClick={() => navigate('/')} className="flex items-center gap-3 text-left">
+        <img src="/logo.png" alt="" className="h-11 w-11 object-contain" />
+        <span>
+          <strong className="block font-display text-lg leading-none text-texto">CHAVEIRO</strong>
+          <span className="font-display text-sm font-semibold tracking-[0.18em] text-ouro">ABENÇOADO</span>
+        </span>
+      </button>
+
+      <nav aria-label="Navegação principal" className="mt-10 space-y-1.5">
+        {tabs.map((tab) => {
+          const active = isActive(tab.path)
+          const Icon = tab.icon
+          return (
+            <button key={tab.path} onClick={() => navigate(tab.path)} aria-current={active ? 'page' : undefined}
+              className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium ${active ? 'bg-ouro-fosco text-ouro' : 'text-texto-secundario hover:bg-marinho-claro hover:text-texto'}`}>
+              <Icon size={19} strokeWidth={active ? 2.4 : 1.8} />
+              {tab.label}
+            </button>
+          )
+        })}
+      </nav>
+
+      {mostrarAcao && (
+        <button onClick={() => navigate(ROTA_REGISTRAR)} className="mt-auto flex items-center justify-center gap-2 rounded-xl bg-ouro px-4 py-3.5 font-display font-bold text-marinho shadow-ouro active:scale-[0.98]">
+          <Plus size={19} /> Registrar serviço
+        </button>
+      )}
+    </aside>
+
+    <div className="fixed bottom-0 left-0 right-0 z-50 pointer-events-none lg:hidden">
       <div
         className="max-w-md mx-auto px-4 flex items-center gap-2.5"
         style={{ paddingBottom: 'calc(1.25rem + env(safe-area-inset-bottom))' }}
       >
-        <nav className="pointer-events-auto flex-1 flex items-center justify-between gap-1 rounded-full border border-marinho-borda bg-marinho-claro/85 backdrop-blur-xl shadow-flutuante p-2">
+        <nav aria-label="Navegação principal" className="pointer-events-auto flex-1 flex items-center justify-between gap-1 rounded-2xl border border-marinho-borda bg-marinho-claro/95 backdrop-blur-xl shadow-flutuante p-1.5">
           {tabs.map((tab) => {
             const active = isActive(tab.path)
             const Icon = tab.icon
@@ -38,16 +69,11 @@ export default function BottomNav() {
                 onClick={() => navigate(tab.path)}
                 aria-label={tab.label}
                 aria-current={active ? 'page' : undefined}
-                className={`flex items-center rounded-full px-3.5 py-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ouro
+                className={`flex min-w-0 flex-1 flex-col items-center gap-1 rounded-xl px-1 py-2
                   ${active ? 'bg-ouro-fosco text-ouro' : 'text-texto-secundario active:scale-95'}`}
               >
                 <Icon size={20} strokeWidth={active ? 2.4 : 1.8} className="flex-shrink-0" />
-                <span
-                  className={`font-display font-bold text-xs tracking-wide overflow-hidden whitespace-nowrap transition-all duration-300
-                    ${active ? 'max-w-[84px] pl-1.5 opacity-100' : 'max-w-0 opacity-0'}`}
-                >
-                  {tab.label}
-                </span>
+                <span className="font-display text-[10px] font-bold leading-none tracking-wide">{tab.label}</span>
               </button>
             )
           })}
@@ -64,5 +90,6 @@ export default function BottomNav() {
         )}
       </div>
     </div>
+    </>
   )
 }

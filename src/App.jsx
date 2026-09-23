@@ -16,8 +16,8 @@ import Menu from './pages/Menu'
 
 function AppLayout({ children }) {
   return (
-    <div className="min-h-screen bg-marinho max-w-md mx-auto relative">
-      {children}
+    <div className="min-h-screen bg-marinho relative lg:pl-64">
+      <main className="min-h-screen">{children}</main>
       <BottomNav />
       <InstallPrompt />
     </div>
