@@ -85,6 +85,14 @@ src/
 - Quantidade de chaves foi separada visual e textualmente da quantidade de serviços.
 - Valores usam moeda brasileira com centavos; erro de API não aparece mais como dados zerados.
 
+### Etapa 4 — caixa e fechamento
+
+- Caixa organiza abertura, entradas, saídas e saldo como uma conferência única.
+- Abertura e movimentação têm formulários integrados, estados de envio e mensagens de erro.
+- Fechamento exige confirmação explícita dentro da interface, sem `confirm()` do navegador.
+- Resumo de fechamento usa linguagem visual de comprovante e identifica quando os dados ainda são parciais.
+- Falha de consulta, caixa não aberto, caixa aberto e caixa fechado são estados distintos.
+
 ## Configuração
 
 - `vite.config.js`: proxy /api → localhost:8080
