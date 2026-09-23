@@ -1,11 +1,15 @@
+import { useState } from 'react'
+import { formatarMoeda } from '../utils/formatters'
+
 const MAX_DENTES = 24
-const BASE_Y = 62
+const BASE_Y = 102
 const ALTURA_MIN = 8
 const ALTURA_MAX = 48
 const X_INICIO = 64
 const X_FIM = 328
 
 export default function ChaveDoDia({ servicos = [] }) {
+  const [denteAtivo, setDenteAtivo] = useState(null)
   const total = servicos.length
   const cortes = servicos.slice(-MAX_DENTES)
   const maiorValor = Math.max(...cortes.map((s) => s.valorTotal || 0), 0)
@@ -18,6 +22,19 @@ export default function ChaveDoDia({ servicos = [] }) {
     return ALTURA_MIN + ((valor || 0) / maiorValor) * (ALTURA_MAX - ALTURA_MIN)
   }
 
+  function detalhesServico(servico) {
+    const hora = new Date(servico.dataHora).toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit',
+    })
+    const quantidade = servico.quantidade || 1
+    return {
+      hora,
+      nome: servico.tipoServicoNome || 'Serviço',
+      resumo: `${quantidade} ${quantidade === 1 ? 'unidade' : 'unidades'} · ${formatarMoeda(servico.valorTotal)}`,
+    }
+  }
+
   const descricao = total === 0
     ? 'Perfil do dia: nenhum serviço registrado ainda'
     : `Perfil do dia: ${total} ${total === 1 ? 'serviço' : 'serviços'}, maior valor R$ ${maiorValor.toFixed(0)}`
@@ -25,7 +42,7 @@ export default function ChaveDoDia({ servicos = [] }) {
   return (
     <div>
       <svg
-        viewBox="0 0 340 100"
+        viewBox="0 0 340 140"
         className="w-full h-auto"
         role="img"
         aria-label={descricao}
@@ -33,16 +50,16 @@ export default function ChaveDoDia({ servicos = [] }) {
         {/* Cabeça da chave */}
         <circle
           cx="24"
-          cy="69"
+          cy="109"
           r="19"
           fill="none"
           strokeWidth="6"
           className={total === 0 ? 'stroke-marinho-borda' : 'stroke-ouro'}
         />
-        <circle cx="24" cy="69" r="7" className="fill-marinho" />
+        <circle cx="24" cy="109" r="7" className="fill-marinho" />
 
         {/* Pescoço + lâmina */}
-        <rect x="42" y="63" width="22" height="12" rx="2" className="fill-marinho-borda" />
+        <rect x="42" y="103" width="22" height="12" rx="2" className="fill-marinho-borda" />
         <rect
           x="56"
           y={BASE_Y}
@@ -55,21 +72,62 @@ export default function ChaveDoDia({ servicos = [] }) {
         {/* Um dente por serviço — altura proporcional ao valor */}
         {cortes.map((servico, i) => {
           const h = alturaDente(servico.valorTotal)
+          const id = servico.id ?? i
+          const ativo = denteAtivo === id
+          const x = X_INICIO + i * passo
+          const detalhes = detalhesServico(servico)
+          const tooltipX = Math.min(Math.max(x + larguraDente / 2 - 67, 4), 202)
           return (
-            <rect
-              key={servico.id ?? i}
-              x={X_INICIO + i * passo}
-              y={BASE_Y - h}
-              width={larguraDente}
-              height={h}
-              rx="1.5"
-              className="fill-ouro animate-cortar"
-              style={{
-                transformBox: 'fill-box',
-                transformOrigin: 'bottom',
-                animationDelay: `${i * 30}ms`,
+            <g
+              key={id}
+              role="button"
+              tabIndex="0"
+              aria-label={`${detalhes.nome}, ${detalhes.hora}, ${detalhes.resumo}`}
+              onMouseEnter={() => setDenteAtivo(id)}
+              onMouseLeave={() => setDenteAtivo(null)}
+              onFocus={() => setDenteAtivo(id)}
+              onBlur={() => setDenteAtivo(null)}
+              onClick={() => setDenteAtivo((atual) => atual === id ? null : id)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault()
+                  setDenteAtivo((atual) => atual === id ? null : id)
+                }
               }}
-            />
+              className="cursor-pointer outline-none"
+            >
+              <rect
+                x={x - 3}
+                y={BASE_Y - h - 4}
+                width={larguraDente + 6}
+                height={h + 8}
+                fill="transparent"
+              />
+              <rect
+                x={x}
+                y={BASE_Y - h}
+                width={larguraDente}
+                height={h}
+                rx="1.5"
+                className={`animate-cortar transition-colors ${ativo ? 'fill-texto' : 'fill-ouro'}`}
+                style={{
+                  transformBox: 'fill-box',
+                  transformOrigin: 'bottom',
+                  animationDelay: `${i * 30}ms`,
+                }}
+              />
+
+              {ativo && (
+                <foreignObject x={tooltipX} y="2" width="134" height="52" className="pointer-events-none overflow-visible">
+                  <div className="rounded-lg border border-ouro/40 bg-marinho px-2.5 py-2 shadow-flutuante">
+                    <p className="truncate text-[9px] font-semibold text-texto">{detalhes.nome}</p>
+                    <p className="mt-0.5 truncate text-[8px] text-texto-secundario">
+                      {detalhes.hora} · {detalhes.resumo}
+                    </p>
+                  </div>
+                </foreignObject>
+              )}
+            </g>
           )
         })}
       </svg>

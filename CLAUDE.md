@@ -128,6 +128,13 @@ src/
 - Navegações da PWA usam rede primeiro e recorrem ao cache apenas quando estiver offline.
 - Cache atualizado para `chaveiro-v2`, evitando que versões antigas escondam mudanças visuais.
 
+### Chave do dia — detalhes por dente
+
+- Cada dente pode ser explorado por mouse, toque ou teclado.
+- O destaque revela nome do serviço, horário, quantidade e valor no próprio desenho.
+- A área de interação é maior que o dente visível para facilitar o toque no celular.
+- O tooltip permanece contido no desenho mesmo nos primeiros e últimos dentes.
+
 ## Configuração
 
 - `vite.config.js`: proxy /api → localhost:8080
