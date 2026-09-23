@@ -121,6 +121,13 @@ src/
 - Valores, horários, quantidades e o contador principal usam DM Sans.
 - Barlow Condensed permanece reservada aos títulos e rótulos de identidade.
 
+### PWA e cache no desenvolvimento
+
+- O service worker deixou de ser registrado no modo de desenvolvimento.
+- Ao abrir o projeto no Vite, registros e caches antigos são removidos automaticamente.
+- Navegações da PWA usam rede primeiro e recorrem ao cache apenas quando estiver offline.
+- Cache atualizado para `chaveiro-v2`, evitando que versões antigas escondam mudanças visuais.
+
 ## Configuração
 
 - `vite.config.js`: proxy /api → localhost:8080

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chaveiro-v1'
+const CACHE_NAME = 'chaveiro-v2'
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
@@ -36,6 +36,22 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url)
 
+  // Navegação: busca a versão atual e usa o cache apenas quando estiver offline
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response.ok) {
+            const clone = response.clone()
+            caches.open(CACHE_NAME).then((cache) => cache.put('/', clone))
+          }
+          return response
+        })
+        .catch(() => caches.match('/'))
+    )
+    return
+  }
+
   // API: sempre tenta a rede primeiro
   if (url.pathname.startsWith('/api/')) {
     event.respondWith(
@@ -69,11 +85,6 @@ self.addEventListener('fetch', (event) => {
         }
         return response
       })
-    }).catch(() => {
-      // Fallback para navegação: redireciona pro index (SPA)
-      if (event.request.mode === 'navigate') {
-        return caches.match('/')
-      }
     })
   )
 })
