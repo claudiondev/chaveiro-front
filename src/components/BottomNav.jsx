@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Home, KeyRound, Wallet, MoreHorizontal, Plus } from 'lucide-react'
+import { ChevronLeft, Home, KeyRound, Wallet, MoreHorizontal, Plus } from 'lucide-react'
 
 const tabs = [
   { path: '/', label: 'Início', icon: Home },
@@ -10,7 +10,7 @@ const tabs = [
 
 const ROTA_REGISTRAR = '/servicos/registrar'
 
-export default function BottomNav() {
+export default function BottomNav({ recolhido = false, onToggle }) {
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -23,13 +23,23 @@ export default function BottomNav() {
 
   return (
     <>
-    <aside className="fixed inset-y-0 left-0 z-50 hidden w-64 border-r border-marinho-borda bg-marinho/95 px-5 py-7 lg:flex lg:flex-col">
-      <button onClick={() => navigate('/')} className="flex items-center gap-3 text-left">
-        <img src="/logo.png" alt="" className="h-11 w-11 object-contain" />
-        <span>
+    <aside className={`fixed inset-y-0 left-0 z-50 hidden border-r border-marinho-borda bg-marinho/95 py-7 transition-[width,padding] duration-200 ease-out lg:flex lg:flex-col ${recolhido ? 'w-20 px-3' : 'w-64 px-5'}`}>
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-label={recolhido ? 'Expandir menu lateral' : 'Recolher menu lateral'}
+        aria-expanded={!recolhido}
+        className="absolute -right-3 top-20 flex h-7 w-7 items-center justify-center rounded-full border border-marinho-borda bg-marinho-claro text-texto-secundario shadow-flutuante hover:border-ouro hover:text-ouro"
+      >
+        <ChevronLeft size={15} className={`transition-transform duration-200 ${recolhido ? 'rotate-180' : ''}`} />
+      </button>
+
+      <button onClick={() => navigate('/')} aria-label="Ir para o início" className={`flex items-center text-left ${recolhido ? 'justify-center' : 'gap-3'}`}>
+        <img src="/logo.png" alt="" className="h-11 w-11 flex-shrink-0 object-contain" />
+        {!recolhido && <span>
           <strong className="block font-display text-lg leading-none text-texto">CHAVEIRO</strong>
           <span className="font-display text-sm font-semibold tracking-[0.18em] text-ouro">ABENÇOADO</span>
-        </span>
+        </span>}
       </button>
 
       <nav aria-label="Navegação principal" className="mt-10 space-y-1.5">
@@ -37,18 +47,20 @@ export default function BottomNav() {
           const active = isActive(tab.path)
           const Icon = tab.icon
           return (
-            <button key={tab.path} onClick={() => navigate(tab.path)} aria-current={active ? 'page' : undefined}
-              className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium ${active ? 'bg-ouro-fosco text-ouro' : 'text-texto-secundario hover:bg-marinho-claro hover:text-texto'}`}>
-              <Icon size={19} strokeWidth={active ? 2.4 : 1.8} />
-              {tab.label}
+            <button key={tab.path} onClick={() => navigate(tab.path)} aria-label={tab.label} aria-current={active ? 'page' : undefined}
+              className={`group relative flex w-full items-center rounded-xl py-3 text-sm font-medium ${recolhido ? 'justify-center px-2' : 'gap-3 px-3'} ${active ? 'bg-ouro-fosco text-ouro' : 'text-texto-secundario hover:bg-marinho-claro hover:text-texto'}`}>
+              <Icon size={19} strokeWidth={active ? 2.4 : 1.8} className="flex-shrink-0" />
+              {!recolhido && tab.label}
+              {recolhido && <span className="pointer-events-none absolute left-full ml-3 hidden whitespace-nowrap rounded-lg border border-marinho-borda bg-marinho-claro px-2.5 py-1.5 text-xs font-medium text-texto shadow-flutuante group-hover:block group-focus-visible:block">{tab.label}</span>}
             </button>
           )
         })}
       </nav>
 
       {mostrarAcao && (
-        <button onClick={() => navigate(ROTA_REGISTRAR)} className="mt-auto flex items-center justify-center gap-2 rounded-xl bg-ouro px-4 py-3.5 font-display font-bold text-marinho shadow-ouro active:scale-[0.98]">
-          <Plus size={19} /> Registrar serviço
+        <button onClick={() => navigate(ROTA_REGISTRAR)} aria-label="Registrar serviço" className={`group relative mt-auto flex items-center justify-center rounded-xl bg-ouro font-display font-bold text-marinho shadow-ouro active:scale-[0.98] ${recolhido ? 'px-2 py-3.5' : 'gap-2 px-4 py-3.5'}`}>
+          <Plus size={19} /> {!recolhido && 'Registrar serviço'}
+          {recolhido && <span className="pointer-events-none absolute left-full ml-3 hidden whitespace-nowrap rounded-lg border border-marinho-borda bg-marinho-claro px-2.5 py-1.5 text-xs font-medium text-texto shadow-flutuante group-hover:block group-focus-visible:block">Registrar serviço</span>}
         </button>
       )}
     </aside>

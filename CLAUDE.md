@@ -142,6 +142,15 @@ src/
 - Cada registro conta como um serviço, independentemente da quantidade de unidades informada.
 - O texto explicativo da chave foi ajustado para usar a mesma medida do contador.
 
+### Navegação lateral recolhível
+
+- Uma seta na borda do menu alterna entre 256 px e 80 px no desktop.
+- A seta gira e o conteúdo ajusta o recuo com transição de 200 ms.
+- No modo recolhido, os ícones permanecem visíveis e revelam seus nomes no hover ou foco.
+- A ação de registrar serviço também permanece acessível como ícone.
+- A preferência é salva em `localStorage` e mantida durante a navegação.
+- A navegação inferior do celular não foi alterada.
+
 ## Configuração
 
 - `vite.config.js`: proxy /api → localhost:8080
