@@ -21,12 +21,11 @@ O backend terá `GET /api/caixa/historico/lista?page=0&size=10`, ordenado por da
 
 O endpoint será restrito à função `DONO`, terá tamanho de página limitado no servidor e não alterará o endpoint existente `GET /api/caixa/historico?data=AAAA-MM-DD`.
 
-Ao abrir um fechamento, o frontend consulta em paralelo:
+Ao abrir um fechamento, o frontend consulta `/caixa/historico?data=AAAA-MM-DD`. A resposta passou a incluir o campo `servicos` (nome, quantidade e valor total por tipo), agrupado no backend; `/caixa/hoje` devolve o mesmo campo. O campo é aditivo e não quebra consumidores existentes.
 
-- `/caixa/historico?data=AAAA-MM-DD` para os totais consolidados;
-- `/servicos?data=AAAA-MM-DD` para formar o detalhamento por nome.
+Nenhum total financeiro é recalculado nem agrupado no navegador.
 
-Nenhum total financeiro será recalculado no navegador. O frontend apenas agrupa os serviços retornados para apresentação.
+> Ajuste na implementação: a versão inicial previa uma segunda chamada a `/servicos?data=` e agrupamento no frontend. O agrupamento foi para o backend para evitar duas requisições e manter a regra num lugar só.
 
 ## Estados e validação
 

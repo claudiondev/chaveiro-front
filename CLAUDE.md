@@ -51,7 +51,7 @@ src/
     ├── Precos.jsx             # Tabela de preços com filtros
     ├── RegistrarServico.jsx   # Registro rápido de serviço
     ├── Caixa.jsx              # Caixa do dia
-    ├── Fechamento.jsx         # Resumo fechamento
+    ├── Fechamento.jsx         # Abas Hoje/Histórico + comprovante
     ├── Relatorios.jsx         # Gráficos (DONO only)
     └── Menu.jsx               # Perfil, cadastro, config
 ```
@@ -151,6 +151,17 @@ src/
 - A preferência é salva em `localStorage` e mantida durante a navegação.
 - A navegação inferior do celular não foi alterada.
 
+### Fechamento — histórico — 23/09/2026
+
+- `/fechamento` tem abas **Hoje** e **Histórico**, visíveis só para o DONO (funcionário vê só o comprovante de hoje).
+- Histórico carrega 10 fechamentos por vez via `GET /caixa/historico/lista?page=&size=`; “Ver mais” acrescenta a próxima página sem remover as anteriores e some na última.
+- Cada linha mostra data, dia da semana, serviços, chaves e saldo final.
+- Selecionar um dia abre o comprovante via `GET /caixa/historico?data=`; respostas de cliques antigos são descartadas.
+- Desktop (≥1024 px): lista e comprovante lado a lado, comprovante fixo (`sticky`). Celular: comprovante abaixo da lista, com rolagem automática após carregar.
+- O comprovante (compartilhado entre as abas) ganhou o bloco “Serviços realizados”: nome, quantidade somada e valor somado, já agrupados pelo backend (campo `servicos` do `FechamentoResponse`). O front não recalcula nenhum total.
+- Estados próprios: carregando, erro com nova tentativa (lista preservada ao falhar o detalhe), histórico vazio, caixa não aberto hoje (404) e dia sem serviços.
+- `formatters.js`: novo `dataDeISO()` converte `AAAA-MM-DD` em data local sem deslocamento de fuso.
+
 ## Configuração
 
 - `vite.config.js`: proxy /api → localhost:8080
@@ -166,7 +177,7 @@ src/
 | /servicos | Preços | Autenticado |
 | /servicos/registrar | Registrar Serviço | Autenticado |
 | /caixa | Caixa | Autenticado |
-| /fechamento | Fechamento | Autenticado |
+| /fechamento | Fechamento (Histórico só DONO) | Autenticado |
 | /relatorios | Relatórios | DONO |
 | /menu | Menu | Autenticado |
 
