@@ -16,3 +16,9 @@ export function dataLocalISO(data = new Date()) {
 export function formatarData(data = new Date(), opcoes = {}) {
   return data.toLocaleDateString('pt-BR', opcoes)
 }
+
+// Converte 'AAAA-MM-DD' em Date local, sem deslocamento de fuso
+export function dataDeISO(iso) {
+  const [ano, mes, dia] = iso.split('-').map(Number)
+  return new Date(ano, mes - 1, dia)
+}
