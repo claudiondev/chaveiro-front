@@ -17,7 +17,7 @@ Frontend responsivo do Sistema Chaveiro Abençoado, pensado para celular e balc�
 ## Identidade visual atual
 
 - Paleta: marinho (#0B1A2E) + ouro (#F5B731)
-- Fontes: Barlow Condensed (display), DM Sans (body), IBM Plex Mono (números)
+- Fontes: Barlow Condensed somente em títulos; DM Sans em textos, valores, horários e quantidades
 - Conceito: balcão de trabalho, com catálogo, ficha de atendimento e conferência do caixa
 - Layout mobile com navegação inferior e desktop com navegação lateral a partir de 1024 px
 - Elemento de assinatura: chave do dia, formada pelos serviços registrados
@@ -114,6 +114,12 @@ src/
 - O clique expande a observação abaixo da própria linha; um novo clique recolhe o conteúdo.
 - Apenas uma observação permanece aberta por vez.
 - Linhas sem observação continuam apenas informativas e não sugerem interação.
+
+### Tipografia numérica
+
+- Removida a IBM Plex Mono de toda a interface e do carregamento do Google Fonts.
+- Valores, horários, quantidades e o contador principal usam DM Sans.
+- Barlow Condensed permanece reservada aos títulos e rótulos de identidade.
 
 ## Configuração
 

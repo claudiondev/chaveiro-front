@@ -27,7 +27,7 @@ export default {
       fontFamily: {
         display: ['"Barlow Condensed"', 'sans-serif'],
         body: ['"DM Sans"', 'sans-serif'],
-        numero: ['"IBM Plex Mono"', 'ui-monospace', 'monospace'],
+        numero: ['"DM Sans"', 'sans-serif'],
       },
       borderRadius: {
         card: '14px',
