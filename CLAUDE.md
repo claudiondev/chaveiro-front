@@ -68,6 +68,15 @@ src/
 - Criados formatadores compartilhados de moeda/data e estados reutilizáveis de carregamento/erro.
 - Decisão: manter a paleta marinho + ouro e reduzir caixas decorativas, usando hierarquia, listas e divisores.
 
+### Etapa 2 — catálogo e ficha de atendimento
+
+- Tabela de serviços virou um catálogo pesquisável em linhas, com filtros incluindo `OUTROS`.
+- Preços de balcão e externo aparecem em colunas comparáveis e sempre com centavos.
+- Selecionar uma linha abre o registro com o serviço preenchido.
+- Registro usa duas colunas no desktop e fluxo progressivo no celular: escolher serviço e preencher a ficha.
+- O atendimento externo informa que substitui o valor pelo preço externo cadastrado; endereço é obrigatório quando ativado.
+- Adicionados busca vazia, erro com nova tentativa, bloqueio de envio duplicado e rótulos acessíveis.
+
 ## Configuração
 
 - `vite.config.js`: proxy /api → localhost:8080
