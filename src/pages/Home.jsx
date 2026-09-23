@@ -46,10 +46,10 @@ export default function Home() {
       <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(340px,0.9fr)]">
         <section>
           <StatusCaixa caixa={caixa} onAbrir={() => navigate('/caixa')} />
-          <div className="mt-7 flex items-end gap-4"><strong className="font-body text-7xl font-extrabold leading-[0.82] tracking-[-0.06em] text-texto lg:text-8xl">{caixa?.totalChaves || 0}</strong><span className="pb-1 font-display text-xs font-bold uppercase tracking-[0.18em] text-texto-secundario">chaves<br />cortadas</span></div>
+          <div className="mt-7 flex items-end gap-4"><strong className="font-body text-7xl font-extrabold leading-[0.82] tracking-[-0.06em] text-texto lg:text-8xl">{servicos.length}</strong><span className="pb-1 font-display text-xs font-bold uppercase tracking-[0.18em] text-texto-secundario">serviços<br />feitos</span></div>
           <div className="mt-8 rounded-2xl bg-marinho-claro/45 px-4 py-5 sm:px-6">
             <ChaveDoDia servicos={ordenados} />
-            <p className="mt-3 border-t border-marinho-borda pt-3 text-[11px] leading-relaxed text-texto-terciario">Cada dente representa um dos últimos 24 serviços. A altura acompanha o valor do atendimento; o total de chaves aparece acima.</p>
+            <p className="mt-3 border-t border-marinho-borda pt-3 text-[11px] leading-relaxed text-texto-terciario">Cada dente representa um dos últimos 24 serviços. A altura acompanha o valor do atendimento; o total de serviços feitos aparece acima.</p>
           </div>
           <div className="mt-5 grid grid-cols-3 divide-x divide-marinho-borda border-y border-marinho-borda py-4">
             <Dado valor={caixa?.totalEntradas} rotulo="Entradas" cor="text-sucesso" />

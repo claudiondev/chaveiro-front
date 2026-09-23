@@ -135,6 +135,13 @@ src/
 - A área de interação é maior que o dente visível para facilitar o toque no celular.
 - O tooltip permanece contido no desenho mesmo nos primeiros e últimos dentes.
 
+### Home — contador de serviços
+
+- O indicador principal passou de “chaves cortadas” para “serviços feitos”.
+- O total usa a mesma lista diária que forma os dentes e alimenta os últimos atendimentos.
+- Cada registro conta como um serviço, independentemente da quantidade de unidades informada.
+- O texto explicativo da chave foi ajustado para usar a mesma medida do contador.
+
 ## Configuração
 
 - `vite.config.js`: proxy /api → localhost:8080
