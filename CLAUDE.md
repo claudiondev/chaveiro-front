@@ -12,7 +12,6 @@ Frontend responsivo do Sistema Chaveiro Abençoado, pensado para celular e balc�
 - Tailwind CSS 3
 - Axios (com interceptor JWT)
 - React Router DOM 6
-- Recharts 3
 - Lucide React (ícones)
 
 ## Identidade visual atual
@@ -92,6 +91,15 @@ src/
 - Fechamento exige confirmação explícita dentro da interface, sem `confirm()` do navegador.
 - Resumo de fechamento usa linguagem visual de comprovante e identifica quando os dados ainda são parciais.
 - Falha de consulta, caixa não aberto, caixa aberto e caixa fechado são estados distintos.
+
+### Etapa 5 — relatórios, administração e acesso
+
+- Relatórios usam barras horizontais proporcionais para comparar pagamentos e despesas.
+- Removido o Recharts: a curva entre categorias não representava uma série temporal e a dependência deixou de ser necessária.
+- Menu separa operação, administração e conta; o perfil usa a inicial do usuário em vez de emoji.
+- Cadastro de funcionário ganhou campos rotulados, validação mínima de senha e bloqueio de envio duplicado.
+- Login usa “Acesso da equipe”, identidade direta da loja e composição própria para desktop.
+- O bundle principal caiu de aproximadamente 645 kB para 271 kB após remover a biblioteca de gráficos.
 
 ## Configuração
 
