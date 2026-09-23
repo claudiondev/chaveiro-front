@@ -162,6 +162,24 @@ src/
 - Estados próprios: carregando, erro com nova tentativa (lista preservada ao falhar o detalhe), histórico vazio, caixa não aberto hoje (404) e dia sem serviços.
 - `formatters.js`: novo `dataDeISO()` converte `AAAA-MM-DD` em data local sem deslocamento de fuso.
 
+### Relatórios detalhados — 23/09/2026
+
+- Abas Dia / Semana / Mês com navegação entre períodos (‹ Setembro de 2026 ›); a seta de avanço trava no período atual e “Voltar para o atual” aparece fora dele. Respostas de navegações antigas são descartadas.
+- Parâmetros: diário `?data=`, semanal `?inicio=` (semana seg–dom), mensal `?mes=&ano=`.
+- Indicadores: Faturamento, Saídas, Resultado, Serviços (com garantias), Chaves, Fiado a receber.
+- “Faturamento por dia” (semana e mês): barras em CSS, dia atual destacado, dias futuros apagados, melhor dia no cabeçalho, `title`/`aria-label` por barra. Recharts não é usado (não está instalado).
+- Entradas por pagamento com percentual (soma fecha com o faturamento; `AVULSA` = entrada avulsa) e saídas por categoria.
+- Serviços mais vendidos (top 5 + “Ver todos”) e tabela por funcionário (serviços, chaves, faturamento, comissão estimada quando há percentual).
+- Estados: carregando, erro com nova tentativa, período sem movimento.
+- Seções da grade usam `min-w-0` para a tabela não alargar a coluna no celular.
+
+### PDF do fechamento — 23/09/2026
+
+- Botão “Baixar PDF” abaixo do comprovante (abas Hoje e Histórico), só para o DONO.
+- Busca `GET /caixa/historico/pdf?data=` com `responseType: 'blob'`.
+- Celular (`pointer: coarse` + `navigator.canShare`): abre o compartilhamento do aparelho (WhatsApp etc.); cancelar não é erro. Computador: download `fechamento-AAAA-MM-DD.pdf`.
+- Estados: “Gerando PDF…” (bloqueia clique repetido) e mensagem de erro com nova tentativa.
+
 ## Configuração
 
 - `vite.config.js`: proxy /api → localhost:8080
@@ -178,7 +196,7 @@ src/
 | /servicos/registrar | Registrar Serviço | Autenticado |
 | /caixa | Caixa | Autenticado |
 | /fechamento | Fechamento (Histórico só DONO) | Autenticado |
-| /relatorios | Relatórios | DONO |
+| /relatorios | Relatórios (períodos navegáveis) | DONO |
 | /menu | Menu | Autenticado |
 
 ## Commits
