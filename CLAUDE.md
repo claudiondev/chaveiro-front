@@ -108,6 +108,13 @@ src/
 - Zoom do navegador voltou a ser permitido no celular, removendo `user-scalable=no`.
 - Telas autenticadas dependem de backend e sessão válidos para inspeção visual com dados reais.
 
+### Home — observações dos atendimentos
+
+- Atendimentos recentes com `observacao` exibem o indicador “tem observação” e uma seta.
+- O clique expande a observação abaixo da própria linha; um novo clique recolhe o conteúdo.
+- Apenas uma observação permanece aberta por vez.
+- Linhas sem observação continuam apenas informativas e não sugerem interação.
+
 ## Configuração
 
 - `vite.config.js`: proxy /api → localhost:8080

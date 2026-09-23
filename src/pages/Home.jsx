@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowRight, House, Plus } from 'lucide-react'
+import { ArrowRight, ChevronDown, House, Plus } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import ChaveDoDia from '../components/ChaveDoDia'
 import { ErrorState, LoadingState } from '../components/InterfaceState'
@@ -15,6 +15,7 @@ export default function Home() {
   const [caixa, setCaixa] = useState(null)
   const [servicos, setServicos] = useState([])
   const [estado, setEstado] = useState('carregando')
+  const [servicoAbertoId, setServicoAbertoId] = useState(null)
 
   useEffect(() => { carregarDados() }, [])
 
@@ -60,7 +61,14 @@ export default function Home() {
         <section>
           <div className="flex items-center justify-between border-b border-marinho-borda pb-3"><h2 className="section-label">Últimos atendimentos</h2>{recentes.length > 0 && <span className="text-xs text-texto-secundario">{servicos.length} no dia</span>}</div>
           {recentes.length === 0 ? <div className="py-16 text-center lg:text-left"><p className="text-sm text-texto">O balcão ainda está sem movimento.</p><button onClick={() => navigate('/servicos/registrar')} className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-ouro">Registrar primeiro serviço <ArrowRight size={15} /></button></div> :
-            <div>{recentes.map((servico) => <LinhaServico key={servico.id} servico={servico} />)}</div>}
+            <div>{recentes.map((servico) => (
+              <LinhaServico
+                key={servico.id}
+                servico={servico}
+                aberto={servicoAbertoId === servico.id}
+                onToggle={() => setServicoAbertoId((idAtual) => idAtual === servico.id ? null : servico.id)}
+              />
+            ))}</div>}
         </section>
       </div>
     </div></div>
@@ -75,7 +83,45 @@ function StatusCaixa({ caixa, onAbrir }) {
 
 function Dado({ valor, rotulo, cor }) { return <div className="px-2 first:pl-0 last:pr-0 sm:px-4"><p className={`font-numero text-sm font-semibold sm:text-base ${cor}`}>{formatarMoeda(valor)}</p><p className="mt-1 text-[10px] uppercase tracking-wider text-texto-secundario">{rotulo}</p></div> }
 
-function LinhaServico({ servico }) {
+function LinhaServico({ servico, aberto, onToggle }) {
   const hora = new Date(servico.dataHora).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
-  return <div className="grid grid-cols-[42px_1fr_auto] items-center gap-3 border-b border-white/5 py-3.5"><span className="font-numero text-[11px] text-texto-terciario">{hora}</span><div className="min-w-0"><p className="flex items-center gap-1.5 truncate text-sm text-texto"><span className="truncate">{servico.tipoServicoNome}</span>{servico.domicilio && <House size={12} aria-label="Atendimento externo" className="text-ouro" />}</p><p className="mt-1 text-[10px] text-texto-secundario">{PAGAMENTO[servico.formaPagamento] || servico.formaPagamento}{servico.quantidade > 1 && ` · ${servico.quantidade} unidades`}{servico.statusPagamento === 'PENDENTE' && <span className="text-ouro"> · pagamento pendente</span>}</p></div><strong className="font-numero text-sm text-ouro">{formatarMoeda(servico.valorTotal)}</strong></div>
+  const observacao = servico.observacao?.trim()
+  const idObservacao = `observacao-servico-${servico.id}`
+
+  return (
+    <div className="border-b border-white/5">
+      <button
+        type="button"
+        onClick={observacao ? onToggle : undefined}
+        aria-expanded={observacao ? aberto : undefined}
+        aria-controls={observacao ? idObservacao : undefined}
+        className={`grid w-full grid-cols-[42px_1fr_auto] items-center gap-3 py-3.5 text-left ${observacao ? 'group cursor-pointer' : 'cursor-default'}`}
+      >
+        <span className="font-numero text-[11px] text-texto-terciario">{hora}</span>
+        <span className="min-w-0">
+          <span className="flex items-center gap-1.5 truncate text-sm text-texto">
+            <span className="truncate">{servico.tipoServicoNome}</span>
+            {servico.domicilio && <House size={12} aria-label="Atendimento externo" className="text-ouro" />}
+          </span>
+          <span className="mt-1 flex items-center gap-1.5 text-[10px] text-texto-secundario">
+            {PAGAMENTO[servico.formaPagamento] || servico.formaPagamento}
+            {servico.quantidade > 1 && ` · ${servico.quantidade} unidades`}
+            {servico.statusPagamento === 'PENDENTE' && <span className="text-ouro"> · pagamento pendente</span>}
+            {observacao && <span className="text-texto-terciario">· tem observação</span>}
+          </span>
+        </span>
+        <span className="flex items-center gap-2">
+          <strong className="font-numero text-sm text-ouro">{formatarMoeda(servico.valorTotal)}</strong>
+          {observacao && <ChevronDown size={15} className={`text-texto-terciario transition-transform group-hover:text-ouro ${aberto ? 'rotate-180 text-ouro' : ''}`} />}
+        </span>
+      </button>
+
+      {observacao && aberto && (
+        <div id={idObservacao} className="mb-3 ml-[54px] border-l-2 border-ouro/60 pl-3 pr-2">
+          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-texto-terciario">Observação do atendimento</p>
+          <p className="mt-1 text-xs leading-relaxed text-texto-secundario">{observacao}</p>
+        </div>
+      )}
+    </div>
+  )
 }
