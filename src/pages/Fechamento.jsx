@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ChevronRight, KeyRound, ReceiptText } from 'lucide-react'
+import { ChevronRight, FileDown, KeyRound, ReceiptText } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import PageHeader from '../components/PageHeader'
 import { ErrorState, LoadingState } from '../components/InterfaceState'
@@ -51,7 +51,7 @@ function AbaHoje() {
   if (estado === 'carregando') return <LoadingState texto="Carregando conferência" />
   if (estado === 'erro') return <ErrorState mensagem="Não foi possível carregar a conferência do caixa." onRetry={carregar} />
   if (estado === 'sem-caixa') return <Aviso icone={ReceiptText} titulo="Caixa não aberto" texto="Ainda não há caixa aberto hoje. Abra o caixa para começar a registrar o expediente." />
-  return <div className="mt-6 max-w-xl"><Comprovante caixa={caixa} /></div>
+  return <div className="mt-6 max-w-xl"><Comprovante caixa={caixa} /><BotaoPdf data={caixa.data} /></div>
 }
 
 function AbaHistorico() {
@@ -146,7 +146,7 @@ function AbaHistorico() {
       </div>}
       {detalhe.estado === 'carregando' && <LoadingState texto="Abrindo comprovante" />}
       {detalhe.estado === 'erro' && <ErrorState mensagem="Não foi possível abrir o comprovante deste dia." onRetry={() => abrirDetalhe(itemSelecionado)} />}
-      {detalhe.estado === 'pronto' && <Comprovante caixa={detalhe.caixa} />}
+      {detalhe.estado === 'pronto' && <><Comprovante caixa={detalhe.caixa} /><BotaoPdf data={detalhe.caixa.data} /></>}
     </section>
   </div>
 }
@@ -194,6 +194,48 @@ function Comprovante({ caixa }) {
     <div className="mt-5 grid grid-cols-2 border-t border-dashed border-[#102035]/25 pt-5 text-center"><div className="border-r border-[#102035]/15"><strong className="font-numero text-2xl">{caixa.totalServicos || 0}</strong><p className="mt-1 text-[10px] uppercase tracking-wider text-[#102035]/60">Serviços</p></div><div><strong className="font-numero text-2xl">{caixa.totalChaves || 0}</strong><p className="mt-1 text-[10px] uppercase tracking-wider text-[#102035]/60">Chaves cortadas</p></div></div>
     {caixa.observacao && <p className="mt-5 border-t border-dashed border-[#102035]/25 pt-4 text-xs text-[#102035]/70">Observação: {caixa.observacao}</p>}
   </section>
+}
+
+// No celular abre o compartilhamento do aparelho (WhatsApp etc.); no computador baixa o arquivo
+function BotaoPdf({ data }) {
+  const { isDono } = useAuth()
+  const [estado, setEstado] = useState('parado')
+  if (!isDono()) return null
+
+  async function baixar() {
+    if (estado === 'gerando') return
+    setEstado('gerando')
+    try {
+      const response = await api.get('/caixa/historico/pdf', { params: { data }, responseType: 'blob' })
+      const nome = `fechamento-${data}.pdf`
+      const arquivo = new File([response.data], nome, { type: 'application/pdf' })
+      const celular = window.matchMedia('(pointer: coarse)').matches
+      if (celular && navigator.canShare?.({ files: [arquivo] })) {
+        try {
+          await navigator.share({ files: [arquivo], title: `Fechamento ${formatarData(dataDeISO(data))}` })
+        } catch (error) {
+          if (error.name !== 'AbortError') throw error
+        }
+      } else {
+        const url = URL.createObjectURL(arquivo)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = nome
+        link.click()
+        setTimeout(() => URL.revokeObjectURL(url), 1000)
+      }
+      setEstado('parado')
+    } catch {
+      setEstado('erro')
+    }
+  }
+
+  return <div className="mt-4 flex flex-wrap items-center gap-3">
+    <button type="button" onClick={baixar} disabled={estado === 'gerando'} className="flex items-center gap-2 rounded-xl border border-marinho-borda px-4 py-2.5 text-sm font-semibold text-ouro hover:bg-marinho-claro disabled:opacity-50">
+      <FileDown size={16} />{estado === 'gerando' ? 'Gerando PDF…' : 'Baixar PDF'}
+    </button>
+    {estado === 'erro' && <p role="alert" className="text-sm text-erro">Não foi possível gerar o PDF. Tente novamente.</p>}
+  </div>
 }
 
 function Aviso({ icone: Icone, titulo, texto }) {
