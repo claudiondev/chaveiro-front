@@ -44,7 +44,7 @@ export default function ChaveDoDia({ servicos = [] }) {
       <svg
         viewBox="0 0 340 140"
         className="w-full h-auto"
-        role="img"
+        role="group"
         aria-label={descricao}
       >
         {/* Cabeça da chave */}
@@ -87,7 +87,7 @@ export default function ChaveDoDia({ servicos = [] }) {
               onMouseLeave={() => setDenteAtivo(null)}
               onFocus={() => setDenteAtivo(id)}
               onBlur={() => setDenteAtivo(null)}
-              onClick={() => setDenteAtivo((atual) => atual === id ? null : id)}
+              onClick={() => setDenteAtivo(id)}
               onKeyDown={(event) => {
                 if (event.key === 'Enter' || event.key === ' ') {
                   event.preventDefault()
