@@ -77,6 +77,14 @@ src/
 - O atendimento externo informa que substitui o valor pelo preço externo cadastrado; endereço é obrigatório quando ativado.
 - Adicionados busca vazia, erro com nova tentativa, bloqueio de envio duplicado e rótulos acessíveis.
 
+### Etapa 3 — Home do balcão
+
+- A Home prioriza o movimento do dia, com identificação discreta da loja e do usuário.
+- Produção e últimos atendimentos ficam lado a lado no desktop.
+- A chave do dia continua como assinatura visual e agora explica que cada dente representa um dos últimos 24 serviços e sua altura acompanha o valor.
+- Quantidade de chaves foi separada visual e textualmente da quantidade de serviços.
+- Valores usam moeda brasileira com centavos; erro de API não aparece mais como dados zerados.
+
 ## Configuração
 
 - `vite.config.js`: proxy /api → localhost:8080

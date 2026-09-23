@@ -82,7 +82,7 @@ export default function ChaveDoDia({ servicos = [] }) {
         ) : (
           <>
             <p className="font-body text-[11px] text-texto-secundario">
-              {total} {total === 1 ? 'serviço' : 'serviços'} hoje
+              {total > MAX_DENTES ? `últimos ${MAX_DENTES} de ${total} serviços` : `${total} ${total === 1 ? 'serviço' : 'serviços'} hoje`}
             </p>
             <p className="font-body text-[11px] text-texto-secundario">
               maior{' '}
