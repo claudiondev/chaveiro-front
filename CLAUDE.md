@@ -213,12 +213,13 @@ Revisão cruzada (Codex fez o review, Claude complementou) resultou num plano de
 - Vite foi atualizado de 5.4.21 para 8.3.0 e o plugin React de 4.7.0 para 6.1.1, removendo os avisos do servidor de desenvolvimento e a dependência vulnerável do esbuild antigo.
 - `package.json` declara o requisito real do Vite 8: Node `^20.19.0 || >=22.12.0`, evitando build de deploy com runtime incompatível.
 - `npm test`, `npm run build`, `npm audit --omit=dev` e `npm audit` passam; a auditoria terminou com zero vulnerabilidades.
+- **Validação final do PWA em build de produção** (`vite preview`, novo `.claude/launch.json` → `chaveiro-front-preview`, já que o service worker não é exercitado pelo `vite dev`): service worker registrado e ativo (`navigator.serviceWorker.getRegistrations()`), cache `chaveiro-v3` contendo só o app shell (HTML, CSS, JS, ícones, fontes do Google Fonts) — nenhuma URL `/api/**` presente, confirmando que o fix da Task 3 continua de pé mesmo depois dos upgrades do Vite 8 e React Router 7.
 
 ## Configuração
 
 - `vite.config.js`: proxy /api → localhost:8080
 - `tailwind.config.js`: cores (marinho, ouro, sucesso, erro, texto), fontes (display, body, numero)
-- `.claude/launch.json`: dev server config
+- `.claude/launch.json`: dev server config (`chaveiro-front`) e preview de build de produção (`chaveiro-front-preview`, pra validar o service worker/PWA de verdade)
 
 ## Rotas
 
