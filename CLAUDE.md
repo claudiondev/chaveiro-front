@@ -180,6 +180,17 @@ src/
 - Celular (`pointer: coarse` + `navigator.canShare`): abre o compartilhamento do aparelho (WhatsApp etc.); cancelar não é erro. Computador: download `fechamento-AAAA-MM-DD.pdf`.
 - Estados: “Gerando PDF…” (bloqueia clique repetido) e mensagem de erro com nova tentativa.
 
+### Correções pré-deploy — plano do Codex + Claude (24/09/2026)
+
+Revisão cruzada (Codex fez o review, Claude complementou) resultou num plano de 12 tasks antes do deploy. Cada task tem commit próprio; ver `CLAUDE.md` do back para o plano completo e as tasks só de backend.
+
+**Task 3 — `fix: remove dados privados do cache`**
+- `sw.js` guardava todo `GET` autenticado da API (`/api/auth/usuarios`, `/api/servicos`, `/api/ajuda/progressos` etc.) no Cache Storage, e o logout não limpava esse cache. Num aparelho compartilhado, uma falha de rede podia servir dados administrativos de uma sessão anterior pra outra pessoa.
+- Cache agora é só do app shell (os `STATIC_ASSETS`); `/api/**` nunca é lido nem escrito no cache, o handler de `fetch` simplesmente deixa passar (sem `respondWith`), inclusive para o backend em outra origem (`VITE_API_URL` em produção — o `pathname` continua `/api/...` mesmo numa URL absoluta de outro domínio).
+- `CACHE_NAME` subiu pra `chaveiro-v3`: a ativação do novo Service Worker apaga qualquer cache com outro nome, inclusive o `chaveiro-v2` que já tivesse dados guardados de antes desta correção.
+- `src/utils/sessao.js` (`encerrarSessaoLocal`): usada no `logout()` do `AuthContext` e no interceptor 401 do `api.js`. Além de limpar o `localStorage`, apaga todo o Cache Storage — defesa extra pro caso do Service Worker ativo no aparelho ainda ser uma versão anterior a esta correção.
+- **Verificado com o `sw.js` antigo de verdade**, servindo um build de produção (`vite preview`, sem o proxy do `vite dev`): logou como dono, chamou `GET /api/auth/usuarios` e confirmei a resposta gravada em `chaveiro-v2`. Troquei pro `sw.js` novo, recarreguei (ciclo real de update do Service Worker, sem `unregister` manual) e confirmei `chaveiro-v2` apagado e nenhuma chamada nova entrando no `chaveiro-v3`.
+
 ## Configuração
 
 - `vite.config.js`: proxy /api → localhost:8080
