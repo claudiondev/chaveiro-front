@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import api from '../services/api'
 import { encerrarSessaoLocal } from '../utils/sessao'
+import { escreverJson, escreverTexto, lerJson, lerTexto } from '../utils/armazenamentoSeguro'
 
 const AuthContext = createContext()
 
@@ -10,10 +10,10 @@ export function AuthProvider({ children }) {
   const [carregando, setCarregando] = useState(true)
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    const dadosUsuario = localStorage.getItem('usuario')
+    const token = lerTexto('token')
+    const dadosUsuario = lerJson('usuario', null)
     if (token && dadosUsuario) {
-      setUsuario(JSON.parse(dadosUsuario))
+      setUsuario(dadosUsuario)
     }
     setCarregando(false)
   }, [])
@@ -23,8 +23,8 @@ export function AuthProvider({ children }) {
     const { token, role, nome } = response.data
 
     const dadosUsuario = { nome, email, role }
-    localStorage.setItem('token', token)
-    localStorage.setItem('usuario', JSON.stringify(dadosUsuario))
+    escreverTexto('token', token)
+    escreverJson('usuario', dadosUsuario)
     setUsuario(dadosUsuario)
 
     return dadosUsuario

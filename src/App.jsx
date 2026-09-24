@@ -4,6 +4,7 @@ import { useAuth } from './contexts/AuthContext'
 import BottomNav from './components/BottomNav'
 import InstallPrompt from './components/InstallPrompt'
 import ProtectedRoute from './components/ProtectedRoute'
+import { escreverTexto, lerTexto } from './utils/armazenamentoSeguro'
 
 // Pages
 import Login from './pages/Login'
@@ -17,13 +18,13 @@ import Menu from './pages/Menu'
 
 function AppLayout({ children }) {
   const [menuRecolhido, setMenuRecolhido] = useState(
-    () => localStorage.getItem('menu-lateral-recolhido') === 'true'
+    () => lerTexto('menu-lateral-recolhido') === 'true'
   )
 
   function alternarMenu() {
     setMenuRecolhido((estadoAtual) => {
       const novoEstado = !estadoAtual
-      localStorage.setItem('menu-lateral-recolhido', String(novoEstado))
+      escreverTexto('menu-lateral-recolhido', String(novoEstado))
       return novoEstado
     })
   }

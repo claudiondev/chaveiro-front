@@ -166,8 +166,8 @@ src/
 
 - Abas Dia / Semana / Mês com navegação entre períodos (‹ Setembro de 2026 ›); a seta de avanço trava no período atual e “Voltar para o atual” aparece fora dele. Respostas de navegações antigas são descartadas.
 - Parâmetros: diário `?data=`, semanal `?inicio=` (semana seg–dom), mensal `?mes=&ano=`.
-- Indicadores: Faturamento, Saídas, Resultado, Serviços (com garantias), Chaves, Fiado a receber.
-- “Faturamento por dia” (semana e mês): barras em CSS, dia atual destacado, dias futuros apagados, melhor dia no cabeçalho, `title`/`aria-label` por barra. Recharts não é usado (não está instalado).
+- Indicadores: Entradas, Saídas, Resultado, Serviços (com garantias), Chaves, Fiado a receber.
+- “Entradas por dia” (semana e mês): barras em CSS, dia atual destacado, dias futuros apagados, melhor dia no cabeçalho, `title`/`aria-label` por barra. Recharts não é usado (não está instalado).
 - Entradas por pagamento com percentual (soma fecha com o faturamento; `AVULSA` = entrada avulsa) e saídas por categoria.
 - Serviços mais vendidos (top 5 + “Ver todos”) e tabela por funcionário (serviços, chaves, faturamento, comissão estimada quando há percentual).
 - Estados: carregando, erro com nova tentativa, período sem movimento.
@@ -198,6 +198,14 @@ Revisão cruzada (Codex fez o review, Claude complementou) resultou num plano de
 - `HelpContext`: `{children}` agora fica dentro de `<div inert={modalAberto ? '' : undefined}>`, onde `modalAberto = mostrarApresentacao || painelAberto || !!tour`. Com qualquer diálogo modal aberto, o resto do app — inclusive o aviso de instalar o PWA (`InstallPrompt`, sempre `z-50`, abaixo de todos os diálogos de ajuda) — fica sem clique nem Tab. Nudge não é modal, continua fora do `inert`.
 - `GuidedTour`: `scrollIntoView` respeita `prefers-reduced-motion` (`behavior: 'auto'` em vez de `'smooth'`).
 - **Verificado no navegador** (clique real de mouse via automação, não `.click()` JS — que não é bloqueado da mesma forma): com o modal de boas-vindas aberto, um clique real no botão flutuante "Registrar serviço" atrás do overlay não navega nem fecha o modal (`elementFromPoint` confirma que o clique caiu no backdrop do diálogo, não no botão). Tab cicla dentro do modal (`Conhecer agora` → `Agora não` → volta pro `Conhecer agora`). Escape fecha. Tour completo (4 passos do guia "Início"): avançar não move o foco pra fora do botão recém-clicado (confirma que o efeito não reexecuta a cada passo); `Concluir` fecha e restaura `body.style.overflow`; progresso gravado no banco (`INICIO|1|CONCLUIDO`).
+
+### Correções pré-deploy — Task 11 (24/09/2026): sincronização da ajuda
+
+- Progresso confirmado e alteração pendente ficam separados por usuário. Uma resposta vazia ou antiga do servidor não apaga uma conclusão local ainda não sincronizada.
+- Pendências sobrevivem a recargas, são reconciliadas após o login e reenviadas quando a conexão volta. A mesma precedência do backend é usada no front: versão mais nova vence e uma dispensa não substitui uma conclusão da mesma versão.
+- Respostas assíncronas de uma sessão anterior são descartadas após troca de conta; respostas fora de ordem também não removem uma alteração local mais nova.
+- `armazenamentoSeguro.js` protege todas as leituras e escritas do app. Se o navegador bloquear o `localStorage`, sessão, token e ajuda continuam disponíveis em memória até a página ser recarregada.
+- Testes com `node:test` cobrem precedência, JSON inválido, armazenamento normal e fallback em memória. `npm test` e `npm run build` passam.
 
 ## Configuração
 

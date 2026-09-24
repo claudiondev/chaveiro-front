@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Download, X } from 'lucide-react'
+import { escreverTexto, lerTexto } from '../utils/armazenamentoSeguro'
 
 export default function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState(null)
@@ -12,7 +13,7 @@ export default function InstallPrompt() {
       setDeferredPrompt(e)
 
       // Só mostra se o usuário ainda não dispensou
-      const dispensado = localStorage.getItem('pwa-dispensado')
+      const dispensado = lerTexto('pwa-dispensado')
       if (!dispensado) setMostrar(true)
     }
 
@@ -38,7 +39,7 @@ export default function InstallPrompt() {
 
   function handleDispensar() {
     setMostrar(false)
-    localStorage.setItem('pwa-dispensado', 'true')
+    escreverTexto('pwa-dispensado', 'true')
   }
 
   if (!mostrar) return null

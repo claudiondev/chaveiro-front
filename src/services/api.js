@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { encerrarSessaoLocal } from '../utils/sessao'
+import { lerTexto } from '../utils/armazenamentoSeguro'
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL
@@ -9,7 +10,7 @@ const api = axios.create({
 
 // Interceptor para adicionar o token JWT em todas as requisições
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token')
+  const token = lerTexto('token')
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
