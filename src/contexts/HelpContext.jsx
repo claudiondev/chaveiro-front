@@ -98,6 +98,10 @@ export function HelpProvider({ children }) {
   const progressoAtual = guiaAtual ? progressos[guiaAtual.id] : null
   const guiaPendente = guiaAtual && (!progressoAtual || progressoAtual.versao < guiaAtual.versao)
   const etapasTour = tour?.guia.etapas.filter((etapa) => !etapa.role || etapa.role === usuario?.role) || []
+  // Nudge não é modal (não bloqueia a tela); os outros três são — enquanto qualquer um
+  // deles está aberto, o resto do app (inclusive o aviso de instalar o PWA) fica inert:
+  // não recebe clique nem Tab, então não compete pelo foco com o diálogo de ajuda.
+  const modalAberto = mostrarApresentacao || painelAberto || !!tour
 
   const valor = {
     guiaAtual,
@@ -107,14 +111,14 @@ export function HelpProvider({ children }) {
 
   return (
     <HelpContext.Provider value={valor}>
-      {children}
+      <div inert={modalAberto ? '' : undefined}>{children}</div>
       {painelAberto && guiaAtual && <HelpPanel guia={guiaAtual} onClose={() => setPainelAberto(false)} onStart={() => iniciarTour()} />}
       {tour && <GuidedTour etapas={etapasTour} etapa={tour.etapa} onChange={(etapa) => setTour({ ...tour, etapa })} onClose={() => setTour(null)} onComplete={concluirTour} />}
       {mostrarApresentacao && guiaAtual && <HelpWelcome
         onStart={() => { setMostrarApresentacao(false); salvarProgresso('APRESENTACAO', VERSAO_APRESENTACAO, 'CONCLUIDO'); iniciarTour() }}
         onDismiss={() => { setMostrarApresentacao(false); salvarProgresso('APRESENTACAO', VERSAO_APRESENTACAO, 'DISPENSADO') }}
       />}
-      {!mostrarApresentacao && !painelAberto && !tour && carregado && guiaPendente && <HelpNudge guia={guiaAtual} onStart={() => iniciarTour()} onDismiss={dispensarGuia} />}
+      {!modalAberto && carregado && guiaPendente && <HelpNudge guia={guiaAtual} onStart={() => iniciarTour()} onDismiss={dispensarGuia} />}
     </HelpContext.Provider>
   )
 }

@@ -191,6 +191,14 @@ Revisão cruzada (Codex fez o review, Claude complementou) resultou num plano de
 - `src/utils/sessao.js` (`encerrarSessaoLocal`): usada no `logout()` do `AuthContext` e no interceptor 401 do `api.js`. Além de limpar o `localStorage`, apaga todo o Cache Storage — defesa extra pro caso do Service Worker ativo no aparelho ainda ser uma versão anterior a esta correção.
 - **Verificado com o `sw.js` antigo de verdade**, servindo um build de produção (`vite preview`, sem o proxy do `vite dev`): logou como dono, chamou `GET /api/auth/usuarios` e confirmei a resposta gravada em `chaveiro-v2`. Troquei pro `sw.js` novo, recarreguei (ciclo real de update do Service Worker, sem `unregister` manual) e confirmei `chaveiro-v2` apagado e nenhuma chamada nova entrando no `chaveiro-v3`.
 
+### Correções pré-deploy — Task 10 (24/09/2026): foco e rolagem dos tutoriais
+
+- `useDialogoModal` (novo, `src/components/help/`): hook compartilhado por `HelpWelcome`, `HelpPanel` e `GuidedTour` (o `HelpNudge` não é modal, fica de fora). Prende o Tab dentro do diálogo (cicla entre o primeiro e o último elemento focável), fecha com Escape, restaura o foco de quem abriu só ao fechar, trava a rolagem do fundo.
+- **Bug corrigido:** no `GuidedTour`, o efeito de foco/trava tinha `onClose` nas dependências; como o `HelpContext` passa uma arrow function nova a cada render, trocar de passo (que muda o estado do `HelpContext`) disparava o cleanup+setup do efeito de novo, refocando o card e brigando com o `scrollIntoView` do próximo alvo — a tela "pulava" a cada passo. `useDialogoModal` guarda `onFechar` numa ref e configura o efeito só uma vez (`[]`), já que o card nunca desmonta entre passos.
+- `HelpContext`: `{children}` agora fica dentro de `<div inert={modalAberto ? '' : undefined}>`, onde `modalAberto = mostrarApresentacao || painelAberto || !!tour`. Com qualquer diálogo modal aberto, o resto do app — inclusive o aviso de instalar o PWA (`InstallPrompt`, sempre `z-50`, abaixo de todos os diálogos de ajuda) — fica sem clique nem Tab. Nudge não é modal, continua fora do `inert`.
+- `GuidedTour`: `scrollIntoView` respeita `prefers-reduced-motion` (`behavior: 'auto'` em vez de `'smooth'`).
+- **Verificado no navegador** (clique real de mouse via automação, não `.click()` JS — que não é bloqueado da mesma forma): com o modal de boas-vindas aberto, um clique real no botão flutuante "Registrar serviço" atrás do overlay não navega nem fecha o modal (`elementFromPoint` confirma que o clique caiu no backdrop do diálogo, não no botão). Tab cicla dentro do modal (`Conhecer agora` → `Agora não` → volta pro `Conhecer agora`). Escape fecha. Tour completo (4 passos do guia "Início"): avançar não move o foco pra fora do botão recém-clicado (confirma que o efeito não reexecuta a cada passo); `Concluir` fecha e restaura `body.style.overflow`; progresso gravado no banco (`INICIO|1|CONCLUIDO`).
+
 ## Configuração
 
 - `vite.config.js`: proxy /api → localhost:8080

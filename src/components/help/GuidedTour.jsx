@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { X } from 'lucide-react'
+import { useDialogoModal } from './useDialogoModal'
 
 export default function GuidedTour({ etapas, etapa, onChange, onClose, onComplete }) {
   const [alvo, setAlvo] = useState(null)
@@ -8,12 +9,13 @@ export default function GuidedTour({ etapas, etapa, onChange, onClose, onComplet
 
   useEffect(() => {
     if (!atual) return
+    const semAnimacao = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const encontrarElemento = () => Array.from(document.querySelectorAll(`[data-tour="${atual.alvo}"]`))
       .find((elemento) => {
         const rect = elemento.getBoundingClientRect()
         return rect.width > 0 && rect.height > 0
       })
-    encontrarElemento()?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    encontrarElemento()?.scrollIntoView({ behavior: semAnimacao ? 'auto' : 'smooth', block: 'center' })
     const atualizar = () => {
       const elemento = encontrarElemento()
       if (!elemento) return setAlvo(null)
@@ -29,15 +31,9 @@ export default function GuidedTour({ etapas, etapa, onChange, onClose, onComplet
     return () => { window.clearTimeout(timer); observer.disconnect(); window.removeEventListener('resize', atualizar); window.removeEventListener('scroll', atualizar, true) }
   }, [atual])
 
-  useEffect(() => {
-    const overflowAnterior = document.body.style.overflow
-    const focoAnterior = document.activeElement
-    document.body.style.overflow = 'hidden'
-    cardRef.current?.focus()
-    const fecharComEscape = (event) => event.key === 'Escape' && onClose()
-    window.addEventListener('keydown', fecharComEscape)
-    return () => { document.body.style.overflow = overflowAnterior; window.removeEventListener('keydown', fecharComEscape); focoAnterior?.focus?.() }
-  }, [onClose])
+  // Foco/Escape/rolagem do fundo: configurado uma vez (o card nunca desmonta entre
+  // passos), então trocar de etapa não refoca nem briga com o scrollIntoView acima.
+  useDialogoModal(cardRef, onClose)
 
   if (!atual) return null
   const ultima = etapa === etapas.length - 1
