@@ -8,26 +8,35 @@ export default function GuidedTour({ etapas, etapa, onChange, onClose, onComplet
 
   useEffect(() => {
     if (!atual) return
-    const elemento = document.querySelector(`[data-tour="${atual.alvo}"]`)
-    elemento?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    const encontrarElemento = () => Array.from(document.querySelectorAll(`[data-tour="${atual.alvo}"]`))
+      .find((elemento) => {
+        const rect = elemento.getBoundingClientRect()
+        return rect.width > 0 && rect.height > 0
+      })
+    encontrarElemento()?.scrollIntoView({ behavior: 'smooth', block: 'center' })
     const atualizar = () => {
+      const elemento = encontrarElemento()
       if (!elemento) return setAlvo(null)
       const rect = elemento.getBoundingClientRect()
       setAlvo({ top: rect.top - 6, left: rect.left - 6, width: rect.width + 12, height: rect.height + 12 })
     }
     const timer = window.setTimeout(atualizar, 220)
+    const observer = new MutationObserver(atualizar)
+    observer.observe(document.body, { childList: true, subtree: true })
     atualizar()
     window.addEventListener('resize', atualizar)
     window.addEventListener('scroll', atualizar, true)
-    return () => { window.clearTimeout(timer); window.removeEventListener('resize', atualizar); window.removeEventListener('scroll', atualizar, true) }
+    return () => { window.clearTimeout(timer); observer.disconnect(); window.removeEventListener('resize', atualizar); window.removeEventListener('scroll', atualizar, true) }
   }, [atual])
 
   useEffect(() => {
+    const overflowAnterior = document.body.style.overflow
+    const focoAnterior = document.activeElement
     document.body.style.overflow = 'hidden'
     cardRef.current?.focus()
     const fecharComEscape = (event) => event.key === 'Escape' && onClose()
     window.addEventListener('keydown', fecharComEscape)
-    return () => { document.body.style.overflow = ''; window.removeEventListener('keydown', fecharComEscape) }
+    return () => { document.body.style.overflow = overflowAnterior; window.removeEventListener('keydown', fecharComEscape); focoAnterior?.focus?.() }
   }, [onClose])
 
   if (!atual) return null

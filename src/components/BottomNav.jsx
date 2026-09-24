@@ -58,7 +58,7 @@ export default function BottomNav({ recolhido = false, onToggle }) {
       </nav>
 
       {mostrarAcao && (
-        <button onClick={() => navigate(ROTA_REGISTRAR)} aria-label="Registrar serviço" className={`group relative mt-auto flex items-center justify-center rounded-xl bg-ouro font-display font-bold text-marinho shadow-ouro active:scale-[0.98] ${recolhido ? 'px-2 py-3.5' : 'gap-2 px-4 py-3.5'}`}>
+        <button data-tour="servicos-novo" onClick={() => navigate(ROTA_REGISTRAR)} aria-label="Registrar serviço" className={`group relative mt-auto flex items-center justify-center rounded-xl bg-ouro font-display font-bold text-marinho shadow-ouro active:scale-[0.98] ${recolhido ? 'px-2 py-3.5' : 'gap-2 px-4 py-3.5'}`}>
           <Plus size={19} /> {!recolhido && 'Registrar serviço'}
           {recolhido && <span className="pointer-events-none absolute left-full ml-3 hidden whitespace-nowrap rounded-lg border border-marinho-borda bg-marinho-claro px-2.5 py-1.5 text-xs font-medium text-texto shadow-flutuante group-hover:block group-focus-visible:block">Registrar serviço</span>}
         </button>
@@ -93,6 +93,7 @@ export default function BottomNav({ recolhido = false, onToggle }) {
 
         {mostrarAcao && (
           <button
+            data-tour="servicos-novo"
             onClick={() => navigate(ROTA_REGISTRAR)}
             aria-label="Registrar novo serviço"
             className="pointer-events-auto flex-shrink-0 w-14 h-14 rounded-full bg-ouro text-marinho flex items-center justify-center shadow-ouro active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ouro focus-visible:ring-offset-2 focus-visible:ring-offset-marinho"

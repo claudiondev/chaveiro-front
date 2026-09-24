@@ -62,7 +62,7 @@ export default function RegistrarServico() {
       {estado === 'carregando' && <LoadingState texto="Carregando serviços" />}
       {estado === 'erro' && <ErrorState mensagem="Não foi possível carregar os serviços." onRetry={carregarTipos} />}
       {estado === 'pronto' && <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)] lg:items-start">
-        <section className={tipoSelecionado ? 'hidden lg:block' : 'block'}>
+        <section data-tour="registro-escolha" className={tipoSelecionado ? 'hidden lg:block' : 'block'}>
           <h2 className="section-label">1 · Escolha o serviço</h2>
           <div className="relative mt-3"><Search size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-texto-terciario" /><label htmlFor="busca-registro" className="sr-only">Buscar serviço</label><input id="busca-registro" value={busca} onChange={(event) => setBusca(event.target.value)} placeholder="Buscar na tabela" className="field pl-11" /></div>
           <div className="mt-3 overflow-hidden rounded-2xl border border-marinho-borda bg-marinho-claro/55">
@@ -73,7 +73,7 @@ export default function RegistrarServico() {
           </div>
         </section>
 
-        <section className={`${tipoSelecionado ? 'block' : 'hidden lg:block'} lg:sticky lg:top-8`}>
+        <section data-tour="registro-ficha" className={`${tipoSelecionado ? 'block' : 'hidden lg:block'} lg:sticky lg:top-8`}>
           <h2 className="section-label">2 · Ficha do atendimento</h2>
           <div className="mt-3 overflow-hidden rounded-2xl border border-marinho-borda bg-marinho-claro/65">
             {!tipoSelecionado ? <div className="px-6 py-16 text-center"><p className="text-sm text-texto">Selecione um serviço na tabela.</p><p className="mt-1 text-xs text-texto-secundario">Os detalhes do atendimento aparecerão aqui.</p></div> : <>
@@ -84,7 +84,7 @@ export default function RegistrarServico() {
                 <div className="border-t border-marinho-borda pt-5"><label className="flex cursor-pointer items-center justify-between gap-4"><span><strong className="flex items-center gap-2 text-sm font-medium text-texto"><House size={16} /> Atendimento externo</strong><span className="mt-1 block text-xs text-texto-secundario">Usa o preço externo cadastrado para o serviço.</span></span><input type="checkbox" checked={domicilio} onChange={(event) => setDomicilio(event.target.checked)} className="h-5 w-5 accent-[#F5B731]" /></label>{domicilio && <div className="mt-4"><label htmlFor="endereco" className="mb-2 block text-xs text-texto-secundario">Endereço do atendimento</label><input id="endereco" value={endereco} onChange={(event) => setEndereco(event.target.value)} placeholder="Rua, número e referência" className="field" required /></div>}</div>
                 <div><label htmlFor="observacao" className="mb-2 block text-xs text-texto-secundario">Observação (opcional)</label><textarea id="observacao" value={observacao} onChange={(event) => setObservacao(event.target.value)} placeholder="Detalhes úteis do atendimento" rows="2" className="field resize-none" /></div>
               </div>
-              <div className="border-t border-marinho-borda bg-marinho/50 p-5"><div className="mb-4 flex items-end justify-between gap-4"><span className="text-sm text-texto-secundario">Total a receber</span><strong className="font-numero text-2xl text-ouro">{formatarMoeda(total)}</strong></div>{erro && <p className="mb-3 text-sm text-erro" role="alert">{erro}</p>}<GoldButton onClick={handleRegistrar} desabilitado={enviando || (domicilio && !endereco.trim())}>{enviando ? 'Registrando…' : 'Registrar serviço'}</GoldButton></div>
+              <div data-tour="registro-total" className="border-t border-marinho-borda bg-marinho/50 p-5"><div className="mb-4 flex items-end justify-between gap-4"><span className="text-sm text-texto-secundario">Total a receber</span><strong className="font-numero text-2xl text-ouro">{formatarMoeda(total)}</strong></div>{erro && <p className="mb-3 text-sm text-erro" role="alert">{erro}</p>}<GoldButton onClick={handleRegistrar} desabilitado={enviando || (domicilio && !endereco.trim())}>{enviando ? 'Registrando…' : 'Registrar serviço'}</GoldButton></div>
             </>}
           </div>
         </section>

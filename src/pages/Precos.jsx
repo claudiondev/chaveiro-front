@@ -39,9 +39,9 @@ export default function Precos() {
   return (
     <div className="page-shell"><div className="page-content">
       <PageHeader titulo="Tabela de serviços" subtitulo="Consulte os valores do balcão e inicie um atendimento com o serviço já selecionado."
-        acao={<button onClick={() => navigate('/servicos/registrar')} className="hidden items-center gap-2 rounded-xl bg-ouro px-4 py-3 font-display font-bold text-marinho sm:flex"><Plus size={18} /> Novo serviço</button>} />
+        acao={<button data-tour="servicos-novo" onClick={() => navigate('/servicos/registrar')} className="hidden items-center gap-2 rounded-xl bg-ouro px-4 py-3 font-display font-bold text-marinho sm:flex"><Plus size={18} /> Novo serviço</button>} />
 
-      <section className="mt-8 rounded-2xl bg-marinho-claro/70 p-3 sm:p-4">
+      <section data-tour="servicos-busca" className="mt-8 rounded-2xl bg-marinho-claro/70 p-3 sm:p-4">
         <label htmlFor="buscar-servico" className="sr-only">Buscar serviço</label>
         <div className="relative"><Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-texto-terciario" /><input id="buscar-servico" value={busca} onChange={(event) => setBusca(event.target.value)} placeholder="Buscar por nome do serviço" className="field pl-11" /></div>
         <div className="mt-3 flex gap-2 overflow-x-auto pb-1" aria-label="Filtrar por categoria">
@@ -51,7 +51,7 @@ export default function Precos() {
 
       {estado === 'carregando' && <LoadingState texto="Carregando tabela de serviços" />}
       {estado === 'erro' && <ErrorState mensagem="Não foi possível carregar a tabela de serviços." onRetry={carregarTipos} />}
-      {estado === 'pronto' && <section className="mt-6" aria-live="polite">
+      {estado === 'pronto' && <section data-tour="servicos-lista" className="mt-6" aria-live="polite">
         <div className="mb-3 flex items-center justify-between border-b border-marinho-borda pb-3"><h2 className="section-label">{LABELS[categoria]}</h2><span className="text-xs text-texto-secundario">{filtrados.length} {filtrados.length === 1 ? 'serviço' : 'serviços'}</span></div>
         {filtrados.length === 0 ? <div className="py-14 text-center"><p className="text-sm text-texto">Nenhum serviço encontrado.</p><p className="mt-1 text-xs text-texto-secundario">Tente outro nome ou categoria.</p></div> :
           <div className="overflow-hidden rounded-2xl border border-marinho-borda bg-marinho-claro/55">

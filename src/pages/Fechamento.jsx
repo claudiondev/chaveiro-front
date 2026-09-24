@@ -20,11 +20,11 @@ export default function Fechamento() {
       subtitulo={aba === 'hoje' ? 'Conferência do expediente de hoje.' : 'Fechamentos anteriores, do mais recente para o mais antigo.'}
       onBack={() => navigate('/caixa')}
     />
-    {isDono() && <div role="tablist" aria-label="Período" className="mt-6 inline-flex rounded-xl border border-marinho-borda bg-marinho-claro p-1">
+    {isDono() && <div data-tour="fechamento-abas" role="tablist" aria-label="Período" className="mt-6 inline-flex rounded-xl border border-marinho-borda bg-marinho-claro p-1">
       <Aba ativa={aba === 'hoje'} onClick={() => setAba('hoje')}>Hoje</Aba>
       <Aba ativa={aba === 'historico'} onClick={() => setAba('historico')}>Histórico</Aba>
     </div>}
-    {aba === 'hoje' ? <AbaHoje /> : <AbaHistorico />}
+    <div data-tour="fechamento-conteudo">{aba === 'hoje' ? <AbaHoje /> : <AbaHistorico />}</div>
   </div></div>
 }
 
@@ -230,7 +230,7 @@ function BotaoPdf({ data }) {
     }
   }
 
-  return <div className="mt-4 flex flex-wrap items-center gap-3">
+  return <div data-tour="fechamento-pdf" className="mt-4 flex flex-wrap items-center gap-3">
     <button type="button" onClick={baixar} disabled={estado === 'gerando'} className="flex items-center gap-2 rounded-xl border border-marinho-borda px-4 py-2.5 text-sm font-semibold text-ouro hover:bg-marinho-claro disabled:opacity-50">
       <FileDown size={16} />{estado === 'gerando' ? 'Gerando PDF…' : 'Baixar PDF'}
     </button>

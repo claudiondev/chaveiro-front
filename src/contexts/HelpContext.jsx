@@ -45,14 +45,17 @@ export function HelpProvider({ children }) {
     setProgressos(cache)
     setCarregado(false)
 
+    let ativo = true
     api.get('/ajuda/progressos')
       .then(({ data }) => {
+        if (!ativo) return
         const remotos = Object.fromEntries(data.map((item) => [item.guia, item]))
         setProgressos(remotos)
         localStorage.setItem(chaveCache, JSON.stringify(remotos))
       })
       .catch(() => {})
-      .finally(() => setCarregado(true))
+      .finally(() => ativo && setCarregado(true))
+    return () => { ativo = false }
   }, [usuario])
 
   useEffect(() => {

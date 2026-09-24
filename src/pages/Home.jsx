@@ -47,19 +47,21 @@ export default function Home() {
       <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(340px,0.9fr)]">
         <section>
           <StatusCaixa caixa={caixa} onAbrir={() => navigate('/caixa')} />
-          <div className="mt-7 flex items-end gap-4"><strong className="font-body text-7xl font-extrabold leading-[0.82] tracking-[-0.06em] text-texto lg:text-8xl">{servicos.length}</strong><span className="pb-1 font-display text-xs font-bold uppercase tracking-[0.18em] text-texto-secundario">serviços<br />feitos</span></div>
-          <div className="mt-8 rounded-2xl bg-marinho-claro/45 px-4 py-5 sm:px-6">
-            <ChaveDoDia servicos={ordenados} />
-            <p className="mt-3 border-t border-marinho-borda pt-3 text-[11px] leading-relaxed text-texto-terciario">Cada dente representa um dos últimos 24 serviços. A altura acompanha o valor do atendimento; o total de serviços feitos aparece acima.</p>
+          <div data-tour="inicio-movimento">
+            <div className="mt-7 flex items-end gap-4"><strong className="font-body text-7xl font-extrabold leading-[0.82] tracking-[-0.06em] text-texto lg:text-8xl">{servicos.length}</strong><span className="pb-1 font-display text-xs font-bold uppercase tracking-[0.18em] text-texto-secundario">serviços<br />feitos</span></div>
+            <div className="mt-8 rounded-2xl bg-marinho-claro/45 px-4 py-5 sm:px-6">
+              <ChaveDoDia servicos={ordenados} />
+              <p className="mt-3 border-t border-marinho-borda pt-3 text-[11px] leading-relaxed text-texto-terciario">Cada dente representa um dos últimos 24 serviços. A altura acompanha o valor do atendimento; o total de serviços feitos aparece acima.</p>
+            </div>
           </div>
-          <div className="mt-5 grid grid-cols-3 divide-x divide-marinho-borda border-y border-marinho-borda py-4">
+          <div data-tour="inicio-resumo" className="mt-5 grid grid-cols-3 divide-x divide-marinho-borda border-y border-marinho-borda py-4">
             <Dado valor={caixa?.totalEntradas} rotulo="Entradas" cor="text-sucesso" />
             <Dado valor={caixa?.totalSaidas} rotulo="Saídas" cor="text-erro" />
             <Dado valor={caixa?.saldoFinal} rotulo="Saldo" cor="text-ouro" />
           </div>
         </section>
 
-        <section>
+        <section data-tour="inicio-recentes">
           <div className="flex items-center justify-between border-b border-marinho-borda pb-3"><h2 className="section-label">Últimos atendimentos</h2>{recentes.length > 0 && <span className="text-xs text-texto-secundario">{servicos.length} no dia</span>}</div>
           {recentes.length === 0 ? <div className="py-16 text-center lg:text-left"><p className="text-sm text-texto">O balcão ainda está sem movimento.</p><button onClick={() => navigate('/servicos/registrar')} className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-ouro">Registrar primeiro serviço <ArrowRight size={15} /></button></div> :
             <div>{recentes.map((servico) => (
@@ -77,9 +79,9 @@ export default function Home() {
 }
 
 function StatusCaixa({ caixa, onAbrir }) {
-  if (!caixa) return <button onClick={onAbrir} className="flex items-center gap-2 rounded-full border border-ouro/40 bg-ouro-fosco px-3 py-1.5 text-xs font-medium text-ouro"><span className="h-2 w-2 rounded-full border border-ouro" /> Caixa não aberto · abrir agora</button>
+  if (!caixa) return <button data-tour="inicio-caixa" onClick={onAbrir} className="flex items-center gap-2 rounded-full border border-ouro/40 bg-ouro-fosco px-3 py-1.5 text-xs font-medium text-ouro"><span className="h-2 w-2 rounded-full border border-ouro" /> Caixa não aberto · abrir agora</button>
   const aberto = caixa.status === 'ABERTO'
-  return <button onClick={onAbrir} className="flex items-center gap-2 rounded-full border border-marinho-borda px-3 py-1.5 text-xs text-texto-secundario"><span className={`h-2 w-2 rounded-full ${aberto ? 'bg-sucesso' : 'bg-texto-terciario'}`} /> Caixa {aberto ? 'aberto' : 'fechado'}{caixa.valorAbertura > 0 && ` · abertura ${formatarMoeda(caixa.valorAbertura)}`}</button>
+  return <button data-tour="inicio-caixa" onClick={onAbrir} className="flex items-center gap-2 rounded-full border border-marinho-borda px-3 py-1.5 text-xs text-texto-secundario"><span className={`h-2 w-2 rounded-full ${aberto ? 'bg-sucesso' : 'bg-texto-terciario'}`} /> Caixa {aberto ? 'aberto' : 'fechado'}{caixa.valorAbertura > 0 && ` · abertura ${formatarMoeda(caixa.valorAbertura)}`}</button>
 }
 
 function Dado({ valor, rotulo, cor }) { return <div className="px-2 first:pl-0 last:pr-0 sm:px-4"><p className={`font-numero text-sm font-semibold sm:text-base ${cor}`}>{formatarMoeda(valor)}</p><p className="mt-1 text-[10px] uppercase tracking-wider text-texto-secundario">{rotulo}</p></div> }

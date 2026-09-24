@@ -51,7 +51,7 @@ export default function Relatorios() {
   return <div className="page-shell"><div className="page-content">
     <PageHeader titulo="Relatórios" subtitulo="Movimento do caixa, serviços e equipe por período." onBack={() => navigate('/menu')} acao={<span className="hidden rounded-full bg-ouro-fosco px-3 py-1.5 text-[10px] font-bold tracking-wider text-ouro sm:block">ACESSO DO DONO</span>} />
 
-    <div className="mt-7 flex flex-wrap items-center gap-3">
+    <div data-tour="relatorios-periodo" className="mt-7 flex flex-wrap items-center gap-3">
       <div className="inline-flex rounded-xl bg-marinho-claro p-1">{PERIODOS.map((item) => <button key={item} type="button" onClick={() => trocarPeriodo(item)} aria-pressed={periodo === item} className={`rounded-lg px-5 py-2.5 text-sm font-semibold ${periodo === item ? 'bg-ouro text-marinho' : 'text-texto-secundario'}`}>{LABELS[item]}</button>)}</div>
       <div className="flex flex-1 items-center justify-between gap-2 rounded-xl border border-marinho-borda px-1.5 py-1 sm:flex-none">
         <button type="button" onClick={() => setReferencia(deslocar(periodo, referencia, -1))} aria-label="Período anterior" className="flex h-9 w-9 items-center justify-center rounded-lg text-texto hover:bg-marinho-claro"><ChevronLeft size={18} /></button>
@@ -78,7 +78,7 @@ function Conteudo({ dados, periodo }) {
   const resultado = Number(dados.saldoTotal) || 0
 
   return <div className="mt-8">
-    <section className="grid grid-cols-2 gap-x-5 gap-y-6 border-y border-marinho-borda py-6 sm:grid-cols-3">
+    <section data-tour="relatorios-indicadores" className="grid grid-cols-2 gap-x-5 gap-y-6 border-y border-marinho-borda py-6 sm:grid-cols-3">
       <Indicador label="Faturamento" valor={formatarMoeda(dados.totalEntradas)} cor="text-ouro" />
       <Indicador label="Saídas" valor={formatarMoeda(dados.totalSaidas)} cor="text-erro" />
       <Indicador label="Resultado" valor={formatarMoeda(resultado)} cor={resultado < 0 ? 'text-erro' : 'text-sucesso'} />
@@ -89,7 +89,7 @@ function Conteudo({ dados, periodo }) {
 
     {periodo !== 'diario' && <Evolucao dias={dados.porDia || []} periodo={periodo} />}
 
-    <div className="mt-10 grid gap-10 lg:grid-cols-2">
+    <div data-tour="relatorios-detalhes" className="mt-10 grid gap-10 lg:grid-cols-2">
       <Barras titulo="Entradas por pagamento" itens={pagamentos} cor="bg-ouro" vazio="Nenhuma entrada neste período." />
       <Barras titulo="Saídas por categoria" itens={saidas} cor="bg-erro" vazio="Nenhuma saída neste período." total={dados.totalSaidas} />
     </div>
