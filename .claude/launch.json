@@ -6,6 +6,12 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["vite", "--host"],
       "port": 5173
+    },
+    {
+      "name": "chaveiro-front-preview",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vite", "preview", "--host", "--port", "4174"],
+      "port": 4174
     }
   ]
 }
