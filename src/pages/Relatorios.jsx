@@ -79,7 +79,7 @@ function Conteudo({ dados, periodo }) {
 
   return <div className="mt-8">
     <section data-tour="relatorios-indicadores" className="grid grid-cols-2 gap-x-5 gap-y-6 border-y border-marinho-borda py-6 sm:grid-cols-3">
-      <Indicador label="Faturamento" valor={formatarMoeda(dados.totalEntradas)} cor="text-ouro" />
+      <Indicador label="Entradas" valor={formatarMoeda(dados.totalEntradas)} cor="text-ouro" detalhe="dinheiro que entrou no caixa" />
       <Indicador label="Saídas" valor={formatarMoeda(dados.totalSaidas)} cor="text-erro" />
       <Indicador label="Resultado" valor={formatarMoeda(resultado)} cor={resultado < 0 ? 'text-erro' : 'text-sucesso'} />
       <Indicador label="Serviços" valor={dados.totalServicos || 0} detalhe={dados.totalGarantias ? `${dados.totalGarantias} ${dados.totalGarantias === 1 ? 'garantia' : 'garantias'}` : null} />
@@ -111,7 +111,7 @@ function Evolucao({ dias, periodo }) {
   const melhor = dias.reduce((a, b) => (Number(b.entradas) > Number(a?.entradas || 0) ? b : a), null)
   return <section className="mt-10">
     <div className="flex items-baseline justify-between gap-4 border-b border-marinho-borda pb-3">
-      <h2 className="section-label">Faturamento por dia</h2>
+      <h2 className="section-label">Entradas por dia</h2>
       {melhor && Number(melhor.entradas) > 0 && <span className="text-xs text-texto-secundario">Melhor dia: <strong className="font-numero text-texto">{formatarData(dataDeISO(melhor.data), { day: '2-digit', month: '2-digit' })}</strong> · {formatarMoeda(melhor.entradas)}</span>}
     </div>
     <div className={`mt-5 flex h-44 items-end ${periodo === 'mensal' ? 'gap-[3px] sm:gap-1.5' : 'gap-2 sm:gap-4'}`}>
