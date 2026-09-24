@@ -8,10 +8,10 @@ Frontend responsivo do Sistema Chaveiro Abençoado, pensado para celular e balc�
 
 ## Stack
 
-- React 18 / Vite 5
+- React 18 / Vite 8
 - Tailwind CSS 3
 - Axios (com interceptor JWT)
-- React Router DOM 6
+- React Router DOM 7
 - Lucide React (ícones)
 
 ## Identidade visual atual
@@ -207,6 +207,13 @@ Revisão cruzada (Codex fez o review, Claude complementou) resultou num plano de
 - `armazenamentoSeguro.js` protege todas as leituras e escritas do app. Se o navegador bloquear o `localStorage`, sessão, token e ajuda continuam disponíveis em memória até a página ser recarregada.
 - Testes com `node:test` cobrem precedência, JSON inválido, armazenamento normal e fallback em memória. `npm test` e `npm run build` passam.
 
+### Correções pré-deploy — Task 12 (24/09/2026): dependências
+
+- React Router DOM foi atualizado de 6.30.4 para 7.18.4, primeira linha corrigida para os avisos de redirecionamento externo e hidratação que ainda afetavam toda a série 6.x. O projeto usa as APIs declarativas compatíveis (`BrowserRouter`, `Routes`, `Route`, `Navigate`, `useNavigate` e `useLocation`).
+- Vite foi atualizado de 5.4.21 para 8.3.0 e o plugin React de 4.7.0 para 6.1.1, removendo os avisos do servidor de desenvolvimento e a dependência vulnerável do esbuild antigo.
+- `package.json` declara o requisito real do Vite 8: Node `^20.19.0 || >=22.12.0`, evitando build de deploy com runtime incompatível.
+- `npm test`, `npm run build`, `npm audit --omit=dev` e `npm audit` passam; a auditoria terminou com zero vulnerabilidades.
+
 ## Configuração
 
 - `vite.config.js`: proxy /api → localhost:8080
@@ -238,7 +245,7 @@ Revisão cruzada (Codex fez o review, Claude complementou) resultou num plano de
 ## PWA — 24/08/2026
 
 - `public/manifest.json` — nome, cores, ícones, display standalone
-- `public/sw.js` — service worker com cache (assets estáticos + API com NetworkFirst)
+- `public/sw.js` — service worker com cache apenas do app shell; respostas da API não são armazenadas
 - Ícones: pwa-64x64, pwa-192x192, pwa-512x512, pwa-maskable-512x512, apple-touch-icon, favicon-32x32
 - `src/components/InstallPrompt.jsx` — banner de instalação (captura `beforeinstallprompt`)
 - `scripts/generate-icons.mjs` — gera ícones a partir do logo.png via sharp

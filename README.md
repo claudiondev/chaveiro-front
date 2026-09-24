@@ -3,7 +3,7 @@
 <div align="center">
 
 ![React](https://img.shields.io/badge/React%2018-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Vite](https://img.shields.io/badge/Vite%205-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite%208-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind%20CSS%203-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![PWA](https://img.shields.io/badge/PWA-Instalável-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white)
 
@@ -124,11 +124,10 @@ chaveiro-front/
 | Tecnologia | Versão | Função |
 |---|---|---|
 | **React** | 18.3 | Componentização e UI |
-| **Vite** | 5.4 | Build e dev server |
+| **Vite** | 8.3 | Build e dev server |
 | **Tailwind CSS** | 3.4 | Estilização utilitária |
-| **React Router DOM** | 6.30 | Roteamento e proteção de rotas |
+| **React Router DOM** | 7.18 | Roteamento e proteção de rotas |
 | **Axios** | 1.19 | Consumo da API + interceptors JWT |
-| **Recharts** | 3.10 | Gráficos dos relatórios |
 | **Lucide React** | Ícones | Ícones da interface |
 
 </div>
