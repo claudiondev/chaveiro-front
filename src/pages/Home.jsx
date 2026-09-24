@@ -4,6 +4,7 @@ import { ArrowRight, ChevronDown, House, Plus } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import ChaveDoDia from '../components/ChaveDoDia'
 import { ErrorState, LoadingState } from '../components/InterfaceState'
+import HelpButton from '../components/help/HelpButton'
 import { dataLocalISO, formatarData, formatarMoeda } from '../utils/formatters'
 import api from '../services/api'
 
@@ -40,7 +41,7 @@ export default function Home() {
     <div className="page-shell"><div className="page-content">
       <header className="flex items-start justify-between gap-4">
         <div><p className="section-label">Chaveiro Abençoado</p><h1 className="mt-1 font-display text-3xl font-extrabold leading-none text-texto lg:text-4xl">Movimento de hoje</h1><p className="mt-2 text-sm text-texto-secundario">{formatarData(new Date(), { weekday: 'long', day: 'numeric', month: 'long' })} · Olá, {primeiroNome}</p></div>
-        <button onClick={() => navigate('/servicos/registrar')} className="hidden items-center gap-2 rounded-xl bg-ouro px-4 py-3 font-display font-bold text-marinho sm:flex"><Plus size={18} /> Registrar serviço</button>
+        <div className="flex items-center gap-2"><button onClick={() => navigate('/servicos/registrar')} className="hidden items-center gap-2 rounded-xl bg-ouro px-4 py-3 font-display font-bold text-marinho sm:flex"><Plus size={18} /> Registrar serviço</button><HelpButton /></div>
       </header>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(340px,0.9fr)]">

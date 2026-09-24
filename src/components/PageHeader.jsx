@@ -1,4 +1,5 @@
 import { ChevronLeft } from 'lucide-react'
+import HelpButton from './help/HelpButton'
 
 export default function PageHeader({ titulo, subtitulo, onBack, acao }) {
   return (
@@ -9,7 +10,7 @@ export default function PageHeader({ titulo, subtitulo, onBack, acao }) {
         <h1 className="mt-1 font-display text-3xl font-extrabold leading-none text-texto lg:text-4xl">{titulo}</h1>
         {subtitulo && <p className="mt-2 max-w-2xl text-sm text-texto-secundario">{subtitulo}</p>}
       </div>
-      {acao}
+      <div className="flex flex-shrink-0 items-center gap-2">{acao}<HelpButton /></div>
     </header>
   )
 }
