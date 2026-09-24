@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../services/api'
+import { encerrarSessaoLocal } from '../utils/sessao'
 
 const AuthContext = createContext()
 
@@ -30,8 +31,7 @@ export function AuthProvider({ children }) {
   }
 
   function logout() {
-    localStorage.removeItem('token')
-    localStorage.removeItem('usuario')
+    encerrarSessaoLocal()
     setUsuario(null)
   }
 

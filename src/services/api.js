@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { encerrarSessaoLocal } from '../utils/sessao'
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL
@@ -20,8 +21,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('token')
-      localStorage.removeItem('usuario')
+      encerrarSessaoLocal()
       window.location.href = '/login'
     }
     return Promise.reject(error)
