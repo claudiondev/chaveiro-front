@@ -26,6 +26,32 @@ Layout responsivo para celular e computador, com dois perfis de acesso: **DONO**
 
 ---
 
+## 📸 Capturas de Tela
+
+<div align="center">
+<img src="docs/screenshots/login.jpg" width="700" alt="Tela de login do Chaveiro Abençoado"/>
+</div>
+
+<div align="center">
+
+| Login | Início | Tabela de serviços |
+|---|---|---|
+| <img src="docs/screenshots/login-mobile.jpg" width="220"/> | <img src="docs/screenshots/home.jpg" width="220"/> | <img src="docs/screenshots/precos.jpg" width="220"/> |
+
+| Registrar serviço | Caixa do dia | Relatórios |
+|---|---|---|
+| <img src="docs/screenshots/registrar-servico.jpg" width="220"/> | <img src="docs/screenshots/caixa.jpg" width="220"/> | <img src="docs/screenshots/relatorios.jpg" width="220"/> |
+
+| Equipe e administração |
+|---|
+| <img src="docs/screenshots/menu.jpg" width="220"/> |
+
+</div>
+
+> Capturas feitas com dados fictícios de demonstração, em ambiente local — nenhuma informação real do negócio aparece nestas imagens.
+
+---
+
 ## ✨ Funcionalidades
 
 - 🔐 **Login com JWT** — sessão persistida em `localStorage`, logout automático em token expirado/inválido (401)
